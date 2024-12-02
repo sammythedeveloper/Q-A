@@ -8,9 +8,9 @@ const dbConnection = mysql2.createPool({
   connectionLimit: 10,
   socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock',
   host: 'localhost',
-  user: 'Q&A',
+  user: 'anotherone',
   password: '1234',
-  database: 'Q&A'
+  database: 'anotherone'
 });
 
 

@@ -15,20 +15,20 @@ async function register(req, res) {
   }
   //to avoid one user to register twice
   try {
-    const [user] = await dbConnection.query(
-      "SELECT username, user_id FROM users WHERE username = ? OR email = ?",
+    const [existingUser] = await dbConnection.query(
+      "SELECT user_id, username, email FROM users WHERE username = ? OR email = ?",
       [username, email]
     );
-    if (user.length > 0) {
+    if (existingUser.length > 0) {
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ msg: "user already registered" });
+        .json({ msg: "User already registered with this username or email" });
     }
     //   to make the password strong
     if (password.length <= 8) {
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ msg: "password must be at lest 8 characters " });
+        .json({ msg: "password must be at least 8 characters " });
     }
     //encrypted the password
     const salt = await bcrypt.genSalt(10);
@@ -37,11 +37,13 @@ async function register(req, res) {
 
     //to register a new user
     await dbConnection.query(
-      "INSERT INTO users (username, firstname,lastname,email, password) VALUES (?,?,?,?,?)",
+      "INSERT INTO users (username, firstname, lastname, email, password) VALUES (?, ?, ?, ?, ?)",
       [username, firstname, lastname, email, hashedPassword]
     );
 
-    return res.status(StatusCodes.CREATED).json({ msg: "User registered successfully"  });
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ msg: "User registered successfully" });
   } catch (error) {
     console.log(error.message);
     return res
@@ -57,12 +59,12 @@ async function login(req, res) {
   if (!email || !password) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "please enter all required fields" });
+      .json({ msg: "Please enter both email and password" });
   }
 
   try {
     const [user] = await dbConnection.query(
-      "SELECT username, user_id, password FROM users WHERE email = ?",
+      "SELECT user_id, username, password FROM users WHERE email = ?",
       [email]
     );
     if (user.length == 0) {

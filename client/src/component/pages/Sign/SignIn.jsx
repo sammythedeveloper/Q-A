@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";  // Import useNavigate
 import { motion } from "framer-motion";
+import api from "../../../Context/API";  // Assuming you have an api instance
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,8 @@ const SignIn = () => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();  // Initialize navigate
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,10 +36,28 @@ const SignIn = () => {
     return Object.keys(formErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Handle sign-in logic here
+      try {
+        // Make the POST request to the backend
+        const response = await api.post("/users/login", formData);
+        console.log(response.data);  // You can remove this after testing
+
+        if (response.data.token) {
+          // Save the token in localStorage
+          localStorage.setItem("token", response.data.token);
+
+          // Redirect to the dashboard
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        console.error(error);
+        // Handle any error (e.g., wrong credentials)
+        if (error.response) {
+          setErrors({ ...errors, general: error.response.data.msg });
+        }
+      }
     }
   };
 
@@ -89,6 +110,7 @@ const SignIn = () => {
               />
               {errors.password && <p className="text-red-600 text-sm mt-2">{errors.password}</p>}
             </div>
+            {errors.general && <p className="text-red-600 text-sm mt-2">{errors.general}</p>} {/* Display general error */}
             <button
               type="submit"
               className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"

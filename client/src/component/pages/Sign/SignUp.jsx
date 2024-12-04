@@ -185,6 +185,10 @@ const SignUp = () => {
               Sign Up
             </button>
           </form>
+          <p className="mt-4 text-center text-gray-600">
+            Already have an account?{" "}
+            <Link to="/signin" className="text-blue-600 hover:underline">Sign in</Link>
+          </p>
         </motion.div>
       </div>
       <footer className="bg-gray-900 text-white py-8">

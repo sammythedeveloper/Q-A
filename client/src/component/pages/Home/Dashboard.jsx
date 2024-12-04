@@ -39,7 +39,7 @@ const Dashboard = () => {
       <div className="absolute top-6 right-6 z-10">
         <button
           onClick={handleLogout} // Calling the logout function
-          className="bg-red-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-red-700 transition"
+          className="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-red-700 transition"
         >
           Logout
         </button>

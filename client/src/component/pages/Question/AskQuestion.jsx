@@ -22,15 +22,14 @@ const AskQuestion = () => {
       [name]: "",
     }));
   };
- 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
     setSuccessMessage("");
-      
+
     // Get the user_id from localStorage (assuming it is stored as 'user_id')
-  const userId = localStorage.getItem('user_id'); 
+    const userId = localStorage.getItem("user_id");
 
     // Form validation
     const validationErrors = {};
@@ -167,7 +166,9 @@ const AskQuestion = () => {
 
       {/* Footer */}
       <footer className="bg-black py-6 mt-6 text-center text-white">
-        <p className="text-lg">© 2024 Your Company Name. All rights reserved.</p>
+        <p className="text-lg">
+          © 2024 Your Company Name. All rights reserved.
+        </p>
       </footer>
     </div>
   );

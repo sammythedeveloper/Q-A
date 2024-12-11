@@ -82,7 +82,7 @@ const AskQuestion = () => {
         <div className="flex space-x-6">
           <button
             onClick={() => navigate("/dashboard")}
-            className="text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-700 transition"
+            className="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-600 transition"
           >
             Dashboard
           </button>
@@ -90,7 +90,7 @@ const AskQuestion = () => {
         {/* Logout Button at the Top Right */}
         <button
           onClick={handleLogout}
-          className="bg-black text-white px-6 py-2 rounded-md font-semibold hover:bg-red-700 transition absolute top-4 right-4"
+          className="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-600 transition"
         >
           Log Out
         </button>

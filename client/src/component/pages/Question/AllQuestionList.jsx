@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import api from "../../../Context/API"; 
 import { motion } from "framer-motion"; // for animations similar to Dashboard
 import { FaQuestionCircle } from "react-icons/fa"; // For the question icon in the button
+import { useNavigate } from 'react-router-dom';
 
 const AllQuestionList = () => {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch all questions from the backend when the component mounts
@@ -30,8 +32,32 @@ const AllQuestionList = () => {
     return username && username.length > 0 ? username[0].toUpperCase() : '';
   };
 
+    // Handle logout
+  const handleLogout = () => {
+    // Remove the token from localStorage
+    localStorage.removeItem("token");
+
+    // Redirect to sign-in page after logout
+    navigate("/signin");
+  };
+
+
   return (
     <div className="bg-gradient-to-br from-blue-600 to-purple-700 min-h-screen text-white font-sans">
+      <div className="absolute top-6 left-6 right-6 z-10 flex justify-between ">
+      <button
+            onClick={() => navigate("/dashboard")}
+            className="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-600 transition"
+          >
+            Dashboard
+          </button>
+        <button
+          onClick={handleLogout} // Calling the logout function
+          className="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-600 transition"
+        >
+          Logout
+        </button>
+      </div>
       {/* Hero Section */}
       <header className="relative overflow-hidden py-20">
         <div className="container mx-auto px-6 text-center">
@@ -80,7 +106,9 @@ const AllQuestionList = () => {
                       Asked by: <span className="font-semibold">{question.username}</span>
                     </p>
                   </div>
-                  <button className="bg-gradient-to-br from-green-500 to-green-700 text-white px-6 py-3 mt-4 rounded-full text-lg font-semibold hover:from-green-600 hover:to-green-800 transition flex items-center space-x-2">
+                  <button
+                  onClick={() => navigate(`/answerquestion?questionId=${question.question_id}`)} 
+                    className="bg-gradient-to-br from-green-500 to-green-700 text-white px-6 py-3 mt-4 rounded-full text-lg font-semibold hover:from-green-600 hover:to-green-800 transition flex items-center space-x-2">
                     <FaQuestionCircle />
                     <span>Answer this question</span>
                   </button>

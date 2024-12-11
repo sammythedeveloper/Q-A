@@ -47,6 +47,9 @@ const SignIn = () => {
         if (response.data.token) {
           // Save the token in localStorage
           localStorage.setItem("token", response.data.token);
+          if (response.data.user_id) {
+            localStorage.setItem("user_id", response.data.user_id);
+          }
 
           // Redirect to the dashboard
           navigate("/dashboard");

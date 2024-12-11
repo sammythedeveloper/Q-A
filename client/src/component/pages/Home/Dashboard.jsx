@@ -34,7 +34,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-blue-600 to-purple-700 min-h-screen text-white font-sans">
+    <div className="bg-gradient-to-br from-blue-600 to-purple-700 min-h-screen text-white font-sans flex flex-col ">
       {/* Fixed Logout Button */}
       <div className="absolute top-6 right-6 z-10">
         <button
@@ -46,7 +46,7 @@ const Dashboard = () => {
       </div>
 
       {/* Hero Section */}
-      <header className="relative overflow-hidden py-20">
+      <header className="relative overflow-hidden py-20 ">
         <div className="container mx-auto px-6 text-center">
           <motion.h1
             initial={{ opacity: 0, y: -50 }}
@@ -68,7 +68,7 @@ const Dashboard = () => {
       </header>
 
       {/* Community Actions Section */}
-      <section className="py-16 bg-white text-gray-800">
+      <section className="py-16 bg-white text-gray-800 flex-grow ">
         <div className="container mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0, scale: 0.9 }}
@@ -87,7 +87,7 @@ const Dashboard = () => {
               Want to ask a question? Click here!
             </button>
             <button
-              onClick={() => navigate("/give-answers")}
+              onClick={() => navigate("/allQuestions")}
               className="bg-green-600 text-white py-3 px-6 rounded-full text-lg font-semibold hover:bg-green-700 transition"
             >
               Want to give answers? Click here!

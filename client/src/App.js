@@ -6,7 +6,8 @@ import Dashboard from "./component/pages/Home/Dashboard.jsx";
 import PrivateRoute from "./component/pages/Layout/PrivateRoute.jsx";
 import AskPrivateRoute from "./component/pages/Layout/AskPrivateroute.jsx";
 import AskQuestion from "./component/pages/Question/AskQuestion.jsx";
-import AllQuestionList from "./component/pages/Question/AllQuestionList.jsx"; // Import ListQuestions
+import AllQuestionList from "./component/pages/Question/AllQuestionList.jsx"; 
+import AnswerForm from "./component/pages/Answer/Answer.jsx";
 
 function App() {
   return (
@@ -34,10 +35,19 @@ function App() {
         />
         {/* Route for listing questions */}
         <Route
-          path="/give-answers"
+          path="/allQuestions"
           element={
             <PrivateRoute>
               <AllQuestionList />
+            </PrivateRoute>
+          }
+        />
+   {/* Route for Answering a Question */}
+<Route
+          path="/answerquestion"
+          element={
+            <PrivateRoute>
+              <AnswerForm/>
             </PrivateRoute>
           }
         />

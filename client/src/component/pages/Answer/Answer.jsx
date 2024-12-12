@@ -1,43 +1,44 @@
 import React, { useState, useEffect } from "react";
-import api from "../../../Context/API"; // Assuming this is your API instance
-import { useLocation, useNavigate } from "react-router-dom"; // Import hooks
+import api from "../../../Context/API"; 
+import { useLocation, useNavigate } from "react-router-dom"; 
 
 const AnswerForm = () => {
-  const location = useLocation(); // Get the current location to access query params
-  const navigate = useNavigate(); // Initialize navigate function
+  const location = useLocation(); 
+  const navigate = useNavigate(); 
   const [answer, setAnswer] = useState("");
   const [question, setQuestion] = useState(null);
-  const [answers, setAnswers] = useState([]);     //To store answers for the question
+  const [answers, setAnswers] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(true); // Loading state for answers
 
-  // Extract questionId from query parameters
   const queryParams = new URLSearchParams(location.search);
   const questionId = queryParams.get("questionId");
 
-  // Fetch the question details using the questionId
   useEffect(() => {
     if (questionId) {
       api
-        .get(`/questions/singlequestion?questionId=${questionId}`) // Call the updated backend route
+        .get(`/questions/singlequestion?questionId=${questionId}`)
         .then((response) => {
-          setQuestion(response.data.SingleQuestion[0]); // Assuming the backend sends an array with the question
+          setQuestion(response.data.SingleQuestion[0]);
         })
         .catch((error) => {
           console.error(error);
           setErrorMessage("Could not load question details.");
         });
     }
-          // Fetch answers for the question
-          api
-          .get(`/answers/allanswers?questionId=${questionId}`)
-          .then((response) => {
-            setAnswers(response.data); // Assuming this returns an array of answers
-          })
-          .catch((error) => {
-            console.error(error);
-            setErrorMessage("Could not load answers.");
-          });
+
+    api
+      .get(`/answers/allanswers/${questionId}`)
+      .then((response) => {
+        setAnswers(response.data);
+        setLoading(false); // Set loading to false once answers are fetched
+      })
+      .catch((error) => {
+        console.error(error);
+        setErrorMessage("Could not load answers.");
+        setLoading(false);
+      });
   }, [questionId]);
 
   const handleSubmit = async (e) => {
@@ -45,7 +46,6 @@ const AnswerForm = () => {
     setSuccessMessage("");
     setErrorMessage("");
 
-    // Retrieve the user_id from localStorage (or another source)
     const userId = localStorage.getItem("user_id");
 
     if (!userId) {
@@ -53,7 +53,6 @@ const AnswerForm = () => {
       return;
     }
 
-    // Validate fields
     if (!answer.trim()) {
       setErrorMessage("Answer cannot be empty.");
       return;
@@ -68,12 +67,10 @@ const AnswerForm = () => {
 
       if (response.status === 201) {
         setSuccessMessage("Your answer has been posted!");
-        setAnswer(""); // Clear the form
+        setAnswer(""); 
       }
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.msg || "Something went wrong. Try again later."
-      );
+      setErrorMessage("Something went wrong. Try again later.");
     }
   };
 
@@ -89,7 +86,6 @@ const AnswerForm = () => {
             Dashboard
           </button>
         </div>
-        {/* Logout Button at the Top Right */}
         <button
           onClick={() => navigate("/signin")}
           className="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-600 transition"
@@ -107,15 +103,21 @@ const AnswerForm = () => {
 
       {/* Main Content */}
       <div className="bg-white shadow-xl rounded-lg p-10 max-w-4xl w-full mx-auto mt-10 flex-1">
-        {errorMessage && <p className="text-red-500 mb-4 text-center">{errorMessage}</p>}
-        {successMessage && <p className="text-green-500 mb-4 text-center">{successMessage}</p>}
+        {errorMessage && (
+          <p className="text-red-500 mb-4 text-center">{errorMessage}</p>
+        )}
+        {successMessage && (
+          <p className="text-green-500 mb-4 text-center">{successMessage}</p>
+        )}
 
         {question && (
           <div>
             <h2 className="text-4xl font-extrabold text-gray-800 mb-8 text-center">
               Answer the Question
             </h2>
-            <p className="text-xl font-medium text-gray-800 mb-4">{question.question}</p>
+            <p className="text-xl font-medium text-gray-800 mb-4">
+              {question.question}
+            </p>
             <p className="text-lg text-gray-700 mb-8">{question.description}</p>
           </div>
         )}
@@ -139,6 +141,29 @@ const AnswerForm = () => {
             Submit Answer
           </button>
         </form>
+
+        {/* Display Answers */}
+        <div className="mt-10 space-y-8">
+          {loading ? (
+            <div className="text-center">Loading answers...</div>
+          ) : (
+            answers.length > 0 ? (
+              answers.map((answer, index) => (
+                <div key={index} className="p-6 bg-gray-100 rounded-lg shadow-lg">
+                  <div className="flex items-center space-x-4 mb-4">
+                    <div className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold">
+                      {answer.username[0]}
+                    </div>
+                    <p className="text-lg font-semibold">{answer.username}</p>
+                  </div>
+                  <p className="text-gray-700">{answer.answer}</p>
+                </div>
+              ))
+            ) : (
+              <div className="text-center">No answers yet.</div>
+            )
+          )}
+        </div>
       </div>
 
       {/* Footer */}

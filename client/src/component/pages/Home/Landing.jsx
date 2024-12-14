@@ -1,13 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRightIcon } from "@heroicons/react/outline";
-import { Link } from "react-router-dom";  // Import Link from react-router-dom
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const LandingPage = () => {
   return (
-    <div className="bg-gradient-to-br from-blue-600 to-purple-700 min-h-screen text-white font-sans">
+    <div className="bg-black min-h-screen flex flex-col text-white font-sans">
+      {/* Radial Gradient on the top half */}
+      <div className="absolute inset-x-0 top-0 h-1/2 bg-[radial-gradient(circle_farthest-corner,var(--color-fuchsia-900)_50%,var(--color-indigo-950)_75%,transparent)] z-0"></div>
+
       {/* Hero Section */}
-      <header className="relative overflow-hidden py-20">
+      <header className="relative z-10 overflow-hidden py-20">
         <div className="container mx-auto px-6 text-center">
           <motion.h1
             initial={{ opacity: 0, y: -50 }}
@@ -59,7 +61,7 @@ const LandingPage = () => {
       </header>
 
       {/* Features Section */}
-      <section className="py-16 bg-white text-gray-800">
+      <section className="py-16 bg-white text-gray-800 z-10 relative flex-grow">
         <div className="container mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0, scale: 0.9 }}
@@ -108,7 +110,7 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
+      <footer className="bg-gray-900 text-white py-8 mt-auto">
         <div className="container mx-auto px-6 text-center">
           <p>&copy; 2024 DevConnect. All rights reserved.</p>
         </div>

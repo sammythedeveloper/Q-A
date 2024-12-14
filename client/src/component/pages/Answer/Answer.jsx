@@ -96,7 +96,7 @@ const AnswerForm = () => {
 
       {/* Motivational Message */}
       <div className="py-4 text-center">
-        <p className="text-white text-2xl font-semibold">
+        <p className="text-white text-2xl font-semibold animate-shine">
           Answering questions helps others learn too. Share your knowledge!
         </p>
       </div>

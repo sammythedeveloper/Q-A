@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
-/* @layer base{
-  :root{
+@layer base {
+  :root {
     --color-violet-400: theme("colors.violet.400");
     --color-fuchsia-400: theme("colors.fuchsia.400");
     --color-fuchsia-900: theme("colors.fuchsia.900");
@@ -13,29 +12,28 @@
     --color-gray-950: theme("colors.gray.950");
     --color-indigo-950: theme("colors.indigo.300");
     --color-border: theme("colors.gray.200/20%");
+
+
+    --font-sora: var(--font-sora-variable);
+    --font-space-grotesk: var(--font-space-grotesk-variable);
   }
-} */
-:root {
-  --color-fuchsia-00: #9d174d; /* Example color */
-  --color-indigo-900: #111827;  /* Example color */
+  
+
+  
+
 }
 
+.absolute-center {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 isolate -z-10;
+}
 
-body {
-    font-family: 'Orbitron', sans-serif;
-  }
-  
-  h1, h2, h3 {
-    font-family: 'Press Start 2P', sans-serif;
+/* Ensure body and html take the full height and have the background color */
+@layer base {
+  body {
+    font-family: var(--font-space-grotesk), sans-serif;
+    background-color: #1f2937; /* Example for bg-gray-950 */
+    color: #d1d5db; /* Example for text-gray-300 */
+    overflow-x: hidden;
   }
 
-  
-  .border-gradient {
-    border: 4px solid transparent;
-    border-image: linear-gradient(45deg, #000428, #004e92); /* Dark blue-black to lighter blue */
-    border-image-slice: 1;
-  }
-  
-  .bg-gradient-container {
-    background: linear-gradient(45deg, #000428, #004e92, #9b4d96); /* Dark blue to purple */
-  }
+}

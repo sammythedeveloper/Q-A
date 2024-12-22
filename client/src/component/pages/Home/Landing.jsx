@@ -187,8 +187,7 @@ export const Landing = () => {
     <>
       <section className="overflow-x-hidden">
         <header className=" relative z-40 ">
-          <div className=" container  ">
-            <div className=" h-18 lg:h-20 flex justify-between items-center -z-10">
+            <div className=" h-20 flex justify-between items-center -z-10">
               <div className=" flex gap-4 items-center">
                 <div
                   className=" size-10 bg-gray-200 bg-[conic-gradient(from_45deg,var(--color-violet-400),var(--color-fuchsia-400),var(--color-amber-300),var(--color-teal-300),var(--color-violet-400))]"
@@ -199,7 +198,7 @@ export const Landing = () => {
                 ></div>
                 <div className="front-extrabold text-2xl">Q&A</div>
               </div>
-              <div className="h-full hidden lg:block ">
+              <div className="h-full  hidden lg:block ">
                 <nav className="h-full">
                   {navItems.map(({ name, href }) => (
                     <a
@@ -212,7 +211,7 @@ export const Landing = () => {
                   ))}
                 </nav>
               </div>
-              <div className=" hidden lg:flex gap-4">
+              <div className=" hidden sm:block lg:flex gap-4">
                 {loginItems.map(({ buttonVariant, name, href }) => (
                   <a href={href} key={name} className="w-full">
                     <Button variant={buttonVariant}>{name}</Button>
@@ -220,7 +219,7 @@ export const Landing = () => {
                 ))}
               </div>
             </div>
-          </div>
+   
         </header>
         <div className="w-full px-4 md:px-8 lg:px-16">
           <SectionBorder>
@@ -263,7 +262,7 @@ export const Landing = () => {
                     color="white"
                     className=" -translate-x-[336px] -translate-y-[76px] rotate-135 "
                   />
-                  
+
                   <Planet
                     size="md"
                     color="blue"

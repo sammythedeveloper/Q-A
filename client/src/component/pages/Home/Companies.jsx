@@ -7,6 +7,7 @@ import { ReactComponent as Mysql } from "../../asset/MySQL.svg";
 import { ReactComponent as Tailwind } from "../../asset/Tailwind CSS.svg";
 import { ReactComponent as HTML } from "../../asset/HTML5.svg";
 import { ReactComponent as CSS } from "../../asset/CSS3.svg";
+import { ReactComponent as Express } from "../../asset/Express.svg";
 
 import { Button } from "./Button";
 
@@ -47,12 +48,15 @@ export const companies = [
     name: "React",
     logo: ReactLogo,
   },
+  {
+    name: "Express",
+    logo: Express,
+  },
 ];
 
 export const Companies = () => {
   return (
     <section className="py-0">
-      <div className="container mx-auto">
         <div className="flex items-center justify-center pt-12 w-full">
           <Button className="">Are you Ready to learn and share your thoughts?</Button>
         </div>
@@ -67,7 +71,7 @@ export const Companies = () => {
             </div>
           ))}
         </div>
-      </div>
+
     </section>
   );
 };

@@ -12,16 +12,9 @@
     --color-gray-950: theme("colors.gray.950");
     --color-indigo-950: theme("colors.indigo.300");
     --color-border: theme("colors.gray.200/20%");
-
-
-    --font-sora: var(--font-sora-variable);
-    --font-space-grotesk: var(--font-space-grotesk-variable);
   }
-  
-
-  
-
 }
+
 
 .absolute-center {
   @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 isolate -z-10;
@@ -30,10 +23,11 @@
 /* Ensure body and html take the full height and have the background color */
 @layer base {
   body {
-    font-family: var(--font-space-grotesk), sans-serif;
-    background-color: #1f2937; /* Example for bg-gray-950 */
-    color: #d1d5db; /* Example for text-gray-300 */
+    font-family: var(--font-space-grotesk), sans-serif; /* Use Space Grotesk by default */
+    background-color: #030712; /* bg-gray-950 */
+    color: #d1d5db; /* text-gray-300 */
     overflow-x: hidden;
   }
 
 }
+

@@ -142,12 +142,13 @@
 // export default LandingPage;
 // import Image from "next/image";
 import logoImage from "../../asset/sphereal-logo.svg";
-import { Button ,ButtonProps } from "./Button";
+import { Button, ButtonProps } from "./Button";
 import { Orbit } from "./Orbit";
 import { Planet } from "./Planet";
 import { SectionBorder } from "./SectionBorder";
 import { motion } from "framer-motion";
-// import { SectionBorder } from "@/components/SectionBorder";
+import { SectionContent } from "./SectionContent";
+import { Companies } from "./Companies";
 
 export const navItems = [
   {
@@ -262,10 +263,11 @@ export const Landing = () => {
                     color="white"
                     className=" -translate-x-[336px] -translate-y-[76px] rotate-135 "
                   />
+                  
                   <Planet
                     size="md"
                     color="blue"
-                    className=" translate-x-[334px] -translate-y-[388px] -rotate-135 "
+                    className=" translate-x-[334px] -translate-y-[160px] -rotate-135 "
                   />
                   <Planet
                     size="lg"
@@ -281,12 +283,13 @@ export const Landing = () => {
               </div>
             </div>
             <div className="container mx-auto px-6">
+              {/* Why Choose Us Header Section */}
               <motion.h2
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="text-3xl text-white font-heading font-bold text-center mb-8 py-4 "
+                className="text-3xl text-white font-heading font-bold text-center mb-8 py-4"
               >
                 Why Choose Us?
               </motion.h2>
@@ -314,20 +317,36 @@ export const Landing = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.2 }}
-                    className="p-6 bg-white text-black rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-2"
+                    className="p-6 bg-white text-black rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 font-body border-2 border-green-700 "
                   >
-                    <h3 className="text-lg font-semibold mb-2 flex items-center">
+                    <h3 className="text-lg font-bold mb-2 flex items-center tracking-widest uppercase font-heading">
                       <span className="text-2xl mr-2">{feature.icon}</span>
                       {feature.title}
                     </h3>
-                    <p>{feature.desc}</p>
+                    <p className="text-xs tracking-widest font-body uppercase">
+                      {feature.desc}
+                    </p>
                   </motion.div>
                 ))}
               </div>
             </div>
+            <SectionBorder>
+              <SectionContent>
+                <Companies />
+              </SectionContent>
+            </SectionBorder>
+
             <footer className=" text-white py-8 mt-10 border-t ">
               <div className=" text-center">
-                <p>&copy; 2024 DevConnect. All rights reserved.</p>
+                <p className="text-sm">
+                  {" "}
+                  © {new Date().getFullYear()} Developed by Sammythedeveloper.
+                  All rights reserved.
+                </p>
+                <p className="text-sm mt-2">
+                  Built with <span className="text-blue-500">love</span> and
+                  creativity.
+                </p>
               </div>
             </footer>
           </SectionBorder>

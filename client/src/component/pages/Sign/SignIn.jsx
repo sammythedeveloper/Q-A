@@ -68,10 +68,10 @@ const SignIn = () => {
   };
 
   return (
-    <div className=" text-white md:px-8 ">
+    <div className="md:px-8">
       <Header />
       <SectionBorder>
-      <div className=" relative py-24 md:py-36 lg:py-48  isolate overflow-hidden [mask-image:liner-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
+      <div className=" relative py-24 md:py-36 lg:py-48 isolate overflow-hidden [mask-image:liner-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
         <div className=" absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
         <div className="absolute inset-0 -z-10  ">
           <div className=" absolute-center">
@@ -95,14 +95,14 @@ const SignIn = () => {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-black border-white p-8 rounded-lg max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl w-full bg-gradient-to-br from-transparent"
+            className="bg-white  border-white p-8 rounded-lg max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl w-full bg-gradient-to-br from-transparent"
           >
-            <h2 className="text-3xl font-semibold text-center  mb-6">
+            <h2 className="text-3xl font-semibold text-center  text-black mb-6">
               Sign In to Your Account
             </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="email" className="block ">
+                <label htmlFor="email" className="block text-black">
                   Email
                 </label>
                 <input
@@ -121,7 +121,7 @@ const SignIn = () => {
                 )}
               </div>
               <div>
-                <label htmlFor="password" className="block ">
+                <label htmlFor="password" className="block text-black ">
                   Password
                 </label>
                 <input
@@ -150,7 +150,7 @@ const SignIn = () => {
                 Sign In
               </button>
             </form>
-            <p className="mt-4 text-center text-white">
+            <p className="mt-4 text-center text-black">
               Don't have an account?{" "}
               <Link to="/signup" className="text-blue-600 hover:underline">
                 Sign Up
@@ -163,28 +163,28 @@ const SignIn = () => {
             <Planet
               size="lg"
               color="white"
-              className=" -translate-x-[336px] -translate-y-[276px] rotate-135 "
+              className=" -translate-x-[436px] -translate-y-[176px] rotate-135 "
             />
 
             <Planet
               size="md"
               color="blue"
-              className=" translate-x-[334px] -translate-y-[860px] -rotate-135 "
+              className=" translate-x-[434px] -translate-y-[260px] -rotate-135 "
             />
             <Planet
               size="lg"
               color="green"
-              className=" translate-x-[508px] -translate-y-[572px] -rotate-135 "
+              className=" translate-x-[308px] -translate-y-[572px] -rotate-135 "
             />
             <Planet
               size="sm"
               color="orange"
-              className=" -translate-x-[288px] -translate-y-[782px] rotate-135 "
+              className=" -translate-x-[288px] -translate-y-[682px] rotate-135 "
             />
           </div>
         </div>
       </div>
-      <footer className=" text-white py-8 border-t border-gray-300 bg-gradient-to-br from-transparent to-gray-800 ">
+      <footer className="text-white py-8 border-t border-gray-300 bg-gradient-to-br from-transparent to-gray-800 ">
         <div className=" text-center">
           <p className="text-sm">
             {" "}

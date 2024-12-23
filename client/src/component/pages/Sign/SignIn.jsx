@@ -165,7 +165,6 @@ const SignIn = () => {
               color="white"
               className=" -translate-x-[436px] -translate-y-[176px] rotate-135 "
             />
-
             <Planet
               size="md"
               color="blue"

@@ -15,7 +15,6 @@
   }
 }
 
-
 .absolute-center {
   @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 isolate -z-10;
 }
@@ -23,11 +22,9 @@
 /* Ensure body and html take the full height and have the background color */
 @layer base {
   body {
-    font-family: var(--font-space-grotesk), sans-serif; /* Use Space Grotesk by default */
+    font-family: var(--font-space-grotesk); /* Use Space Grotesk by default */
     background-color: #030712; /* bg-gray-950 */
     color: #d1d5db; /* text-gray-300 */
     overflow-x: hidden;
   }
-
 }
-

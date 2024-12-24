@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../Context/API"; // Assuming this is your API instance
+import { Button } from "../Home/Button";
+import { SectionBorder } from "../Home/SectionBorder";
 
 const AskQuestion = () => {
   const [formData, setFormData] = useState({
@@ -76,25 +78,28 @@ const AskQuestion = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-blue-600 to-purple-700 min-h-screen flex flex-col">
+    <section className="overflow-x-hidden">
+     <div className="w-full px-4 md:px-8 lg:px-16">
+      <div className=" absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
       {/* Motivational Message */}
-      <header className="bg-gradient py-4 px-6 flex justify-between items-center">
+      <header className="bg-gradient py-4 px-6 flex justify-between items-center ">
         <div className="flex space-x-6">
-          <button
+          <Button
             onClick={() => navigate("/dashboard")}
-            className="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-600 transition"
+            className="bg-gray-700 text-white px-6 py-3 rounded-full hover:bg-white hover:text-black transition"
           >
             Dashboard
-          </button>
+          </Button>
         </div>
         {/* Logout Button at the Top Right */}
-        <button
+        <Button
           onClick={handleLogout}
-          className="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-600 transition"
+          className="bg-gray-700 text-white px-6 py-3 rounded-full  hover:bg-white hover:text-black transition"
         >
           Log Out
-        </button>
+        </Button>
       </header>
+      <SectionBorder>
 
       <div className="py-4 text-center">
         <p className="text-white text-2xl font-semibold">
@@ -155,22 +160,32 @@ const AskQuestion = () => {
               <p className="text-red-500 text-sm mt-1">{errors.description}</p>
             )}
           </div>
-          <button
+          <Button
             type="submit"
-            className="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-700 transition w-full text-lg"
+            className="bg-blue-900 text-white rounded-full hover:bg-green-700 transition w-full text-lg"
           >
             Submit Question
-          </button>
+          </Button>
         </form>
       </div>
 
       {/* Footer */}
-      <footer className="bg-black py-6 mt-6 text-center text-white">
-        <p className="text-lg">
-          © 2024 Your Company Name. All rights reserved.
-        </p>
+      <footer className=" text-white py-8 mt-10  border-gray-300 bg-gradient-to-br from-transparent to-gray-800 ">
+              <div className=" text-center">
+                <p className="text-sm">
+                  {" "}
+                  © {new Date().getFullYear()} Developed by Sammythedeveloper.
+                  All rights reserved.
+                </p>
+                <p className="text-sm mt-2">
+                  Built with <span className="text-blue-500">love</span> and
+                  creativity.
+                </p>
+              </div>
       </footer>
-    </div>
+      </SectionBorder>
+   </div>
+      </section>
   );
 };
 

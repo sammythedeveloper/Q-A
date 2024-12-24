@@ -38,7 +38,7 @@ const Dashboard = () => {
     <section className=" min-h-screen text-white font-sans flex flex-col ">
       <Header />
       {/* Hero Section */}
-      <div className="relative overflow-hidden py-20 ">
+      <div className="relative overflow-hidden py-20 flex-grow ">
         <div className="container mx-auto px-6 text-center">
           <div className=" absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
           <motion.h1

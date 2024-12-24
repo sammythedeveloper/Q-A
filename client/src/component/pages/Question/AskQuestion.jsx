@@ -73,119 +73,122 @@ const AskQuestion = () => {
 
   // Navigate to dashboard or logout
   const handleLogout = () => {
-    // Your logout logic here (e.g., clearing session, token, etc.)
-    navigate("/login");
+    // Remove the token from localStorage
+    localStorage.removeItem("token");
+
+    // Redirect to sign-in page after logout
+    navigate("/signin");
   };
 
+
   return (
-    <section className="overflow-x-hidden">
-     <div className="w-full px-4 md:px-8 lg:px-16">
-      <div className=" absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
-      {/* Motivational Message */}
-      <header className="bg-gradient py-4 px-6 flex justify-between items-center ">
-        <div className="flex space-x-6">
-          <Button
-            onClick={() => navigate("/dashboard")}
-            className="bg-gray-700 text-white px-6 py-3 rounded-full hover:bg-white hover:text-black transition"
-          >
-            Dashboard
-          </Button>
-        </div>
-        {/* Logout Button at the Top Right */}
-        <Button
-          onClick={handleLogout}
-          className="bg-gray-700 text-white px-6 py-3 rounded-full  hover:bg-white hover:text-black transition"
-        >
-          Log Out
-        </Button>
-      </header>
-      <SectionBorder>
-
-      <div className="py-4 text-center">
-        <p className="text-white text-2xl font-semibold">
-          Asking questions is a step towards learning and growth. Don't hesitate
-          to ask!
-        </p>
-      </div>
-
-      {/* Main Content */}
-      <div className="bg-white shadow-xl rounded-lg p-10 max-w-4xl w-full mx-auto mt-10 flex-1">
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-8 text-center">
-          Ask a Question
-        </h2>
-        {successMessage && (
-          <p className="text-green-500 mb-4 text-center">{successMessage}</p>
-        )}
-        {errors.server && (
-          <p className="text-red-500 mb-4 text-center">{errors.server}</p>
-        )}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label
-              htmlFor="question"
-              className="block text-gray-700 font-medium mb-3 text-lg"
+    <section className="min-h-screen flex flex-col overflow-x-hidden">
+      <div className="w-full px-4 md:px-8 lg:px-16 flex-grow">
+        <div className="absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
+        {/* Motivational Message */}
+        <header className="bg-gradient py-4 px-6 flex justify-between items-center ">
+          <div className="flex space-x-6">
+            <Button
+              onClick={() => navigate("/dashboard")}
+              className="bg-gray-700 text-white px-6 py-3 rounded-full hover:bg-white hover:text-black transition"
             >
-              Question Title
-            </label>
-            <input
-              type="text"
-              id="question"
-              name="question"
-              value={formData.question}
-              onChange={handleChange}
-              className="w-full px-6 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
-              placeholder="Enter your question title"
-            />
-            {errors.question && (
-              <p className="text-red-500 text-sm mt-1">{errors.question}</p>
-            )}
+              Dashboard
+            </Button>
           </div>
-          <div>
-            <label
-              htmlFor="description"
-              className="block text-gray-700 font-medium mb-3 text-lg"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows="6"
-              className="w-full px-6 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
-              placeholder="Provide a detailed description of your question"
-            ></textarea>
-            {errors.description && (
-              <p className="text-red-500 text-sm mt-1">{errors.description}</p>
-            )}
-          </div>
+          {/* Logout Button at the Top Right */}
           <Button
-            type="submit"
-            className="bg-blue-900 text-white rounded-full hover:bg-green-700 transition w-full text-lg"
+            onClick={handleLogout}
+            className="bg-gray-700 text-white px-6 py-3 rounded-full  hover:bg-white hover:text-black transition"
           >
-            Submit Question
+            Log Out
           </Button>
-        </form>
+        </header>
+
+        <SectionBorder>
+          <div className="py-4 text-center">
+            <p className="text-white text-2xl font-semibold">
+              Asking questions is a step towards learning and growth. Don't
+              hesitate to ask!
+            </p>
+          </div>
+
+          {/* Main Content */}
+          <div className="bg-white shadow-xl rounded-lg p-10 max-w-4xl w-full mx-auto mt-10">
+            <h2 className="text-4xl font-extrabold text-gray-800 mb-8 text-center">
+              Ask a Question
+            </h2>
+            {successMessage && (
+              <p className="text-green-500 mb-4 text-center">{successMessage}</p>
+            )}
+            {errors.server && (
+              <p className="text-red-500 mb-4 text-center">{errors.server}</p>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label
+                  htmlFor="question"
+                  className="block text-gray-700 font-medium mb-3 text-lg"
+                >
+                  Question Title
+                </label>
+                <input
+                  type="text"
+                  id="question"
+                  name="question"
+                  value={formData.question}
+                  onChange={handleChange}
+                  className="w-full px-6 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                  placeholder="Enter your question title"
+                />
+                {errors.question && (
+                  <p className="text-red-500 text-sm mt-1">{errors.question}</p>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-gray-700 font-medium mb-3 text-lg"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows="6"
+                  className="w-full px-6 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                  placeholder="Provide a detailed description of your question"
+                ></textarea>
+                {errors.description && (
+                  <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+                )}
+              </div>
+              <Button
+                type="submit"
+                className="bg-blue-900 text-white rounded-full hover:bg-green-700 transition w-full text-lg"
+              >
+                Submit Question
+              </Button>
+            </form>
+          </div>
+        </SectionBorder>
       </div>
 
       {/* Footer */}
-      <footer className=" text-white py-8 mt-10  border-gray-300 bg-gradient-to-br from-transparent to-gray-800 ">
-              <div className=" text-center">
-                <p className="text-sm">
-                  {" "}
-                  © {new Date().getFullYear()} Developed by Sammythedeveloper.
-                  All rights reserved.
-                </p>
-                <p className="text-sm mt-2">
-                  Built with <span className="text-blue-500">love</span> and
-                  creativity.
-                </p>
-              </div>
+      <footer className="text-white py-8 mt-10 border-gray-300 bg-gradient-to-br from-transparent to-gray-800">
+        <div className="text-center">
+          <p className="text-sm">
+            © {new Date().getFullYear()} Developed by Sammythedeveloper. All
+            rights reserved.
+          </p>
+          <p className="text-sm mt-2">
+            Built with <span className="text-blue-500">love</span> and
+            creativity.
+          </p>
+        </div>
       </footer>
-      </SectionBorder>
-   </div>
-      </section>
+    </section>
   );
 };
 

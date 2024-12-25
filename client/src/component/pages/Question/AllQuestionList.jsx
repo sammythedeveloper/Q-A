@@ -48,7 +48,6 @@ const AllQuestionList = () => {
     <GlobalLayout>
     <section className="min-h-screen flex flex-col">
       <div className=" relative overflow-hidden flex flex-col flex-grow">
-        {/* Hero Section */}
         <header className="bg-gradient py-20 px-6 flex justify-between items-center ">
           <div className="container mx-auto px-6 text-center">
             <div className=" absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
@@ -71,8 +70,6 @@ const AllQuestionList = () => {
             </motion.p>
           </div>
         </header>
-
-        {/* Questions List Section */}
         <section className="flex flex-col overflow-x-hidden">
           <div className="container mx-auto px-6">
             <div className="absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>

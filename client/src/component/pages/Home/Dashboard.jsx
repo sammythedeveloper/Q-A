@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Using useNavigate for programmatic navigation
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import Header from "./Header";
 import GlobalLayout from "../Layout/GlobalLayout";
 
 const Dashboard = () => {
@@ -25,16 +24,6 @@ const Dashboard = () => {
   if (!isAuthenticated) {
     return null;
   }
-
-  // Handle logout
-  const handleLogout = () => {
-    // Remove the token from localStorage
-    localStorage.removeItem("token");
-
-    // Redirect to sign-in page after logout
-    navigate("/signin");
-  };
-
   return (
     <GlobalLayout>
       <section className=" min-h-screen text-white flex flex-col ">

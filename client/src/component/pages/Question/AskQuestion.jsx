@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../Context/API"; // Assuming this is your API instance
 import { Button } from "../Home/Button";
+import { motion } from "framer-motion";
 import { SectionBorder } from "../Home/SectionBorder";
 import GlobalLayout from "../Layout/GlobalLayout";
-
 
 const AskQuestion = () => {
   const [formData, setFormData] = useState({
@@ -82,28 +82,31 @@ const AskQuestion = () => {
     navigate("/signin");
   };
 
-
   return (
     <GlobalLayout>
-    <section className="min-h-screen flex flex-col overflow-x-hidden">
-      <div className="w-full px-4 md:px-8 lg:px-16 flex-grow">
-        <div className="absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
-        {/* Motivational Message */}
-        <SectionBorder>
-          <div className="py-4 text-center">
-            <p className="text-white text-2xl font-semibold">
-              Asking questions is a step towards learning and growth. Don't
+      <section className="min-h-screen flex flex-col overflow-x-hidden">
+        <div className="relative overflow-hidden py-20 flex-grow ">
+          <div className="container mx-auto px-6 text-center">
+            <div className="absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 1 }}
+              className="text-3xl m-8 font-medium"
+            >
+              Asking questions is a step towards learning and growth.
+              Don't
               hesitate to ask!
-            </p>
+            </motion.p>
           </div>
-
-          {/* Main Content */}
           <div className="bg-white shadow-xl rounded-lg p-10 max-w-4xl w-full mx-auto mt-10">
             <h2 className="text-4xl font-extrabold text-gray-800 mb-8 text-center">
               Ask a Question
             </h2>
             {successMessage && (
-              <p className="text-green-500 mb-4 text-center">{successMessage}</p>
+              <p className="text-green-500 mb-4 text-center">
+                {successMessage}
+              </p>
             )}
             {errors.server && (
               <p className="text-red-500 mb-4 text-center">{errors.server}</p>
@@ -146,7 +149,9 @@ const AskQuestion = () => {
                   placeholder="Provide a detailed description of your question"
                 ></textarea>
                 {errors.description && (
-                  <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.description}
+                  </p>
                 )}
               </div>
               <Button
@@ -157,10 +162,9 @@ const AskQuestion = () => {
               </Button>
             </form>
           </div>
-        </SectionBorder>
-      </div>
+        </div>
       </section>
-      </GlobalLayout>
+    </GlobalLayout>
   );
 };
 

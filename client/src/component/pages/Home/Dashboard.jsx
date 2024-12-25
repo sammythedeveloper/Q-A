@@ -35,7 +35,7 @@ const Dashboard = () => {
   };
 
   return (
-    <section className=" min-h-screen text-white font-sans flex flex-col ">
+    <section className=" min-h-screen text-white flex flex-col ">
       <Header />
       {/* Hero Section */}
       <div className="relative overflow-hidden py-20 flex-grow ">

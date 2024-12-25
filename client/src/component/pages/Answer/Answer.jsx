@@ -3,6 +3,7 @@ import api from "../../../Context/API";
 import { useLocation } from "react-router-dom";
 import GlobalLayout from "../Layout/GlobalLayout";
 import { motion } from "framer-motion";
+import { Button } from "../Home/Button";
 
 const AnswerForm = () => {
   const location = useLocation();
@@ -135,12 +136,12 @@ const AnswerForm = () => {
                       </p>
                     )}
                   </div>
-                  <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-green-500 transition w-full text-lg"
-                  >
-                    Submit Answer
-                  </button>
+                  <Button
+                type="submit"
+                className="bg-blue-900 text-white rounded-full hover:bg-green-700 transition w-full text-lg"
+              >
+                Submit Answer
+              </Button>
                 </form>
                 <div className="mt-10 space-y-8">
                   {loading ? (
@@ -152,14 +153,14 @@ const AnswerForm = () => {
                         className="p-6 bg-gray-100 rounded-lg shadow-lg"
                       >
                         <div className="flex items-center space-x-4 mb-4">
-                          <div className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold">
-                            {answer.username[0]}
+                          <div className="w-10 h-10 bg-yellow-900 text-white rounded-full flex items-center justify-center text-xl font-bold">
+                            {answer.username[0].toUpperCase()}
                           </div>
-                          <p className="text-lg font-semibold">
+                          <p className="text-lg text-black font-semibold">
                             {answer.username}
                           </p>
                         </div>
-                        <p className="text-gray-700">{answer.answer}</p>
+                        <p className="text-black">{answer.answer}</p>
                       </div>
                     ))
                   ) : (

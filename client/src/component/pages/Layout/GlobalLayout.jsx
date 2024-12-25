@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../Home/Header";
 import Footer from "../Layout/Footer";
+import About from "./About";
+import Resources from "./Resource";
 
 const GlobalLayout = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -29,11 +31,10 @@ const GlobalLayout = ({ children }) => {
         user={isAuthenticated ? { name: "user" } : null}
         onLogout={handleLogout}
       />
-
       {/* Main Content Area */}
       <main className="flex-grow">{children}</main>
-
-      {/* Global Footer */}
+      <About />
+      <Resources />
       <Footer />
     </section>
   );

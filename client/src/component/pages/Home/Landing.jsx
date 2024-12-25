@@ -44,7 +44,7 @@ export const Landing = () => {
   return (
     <>
       <section className="overflow-x-hidden">
-      <Header/>
+        <Header />
         <div className="w-full px-4 md:px-8 lg:px-16">
           <SectionBorder>
             <div className=" relative py-24 md:py-36 lg:py-48  isolate overflow-hidden [mask-image:liner-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">

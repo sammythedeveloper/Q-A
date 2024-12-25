@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../Context/API"; // Assuming this is your API instance
 import { Button } from "../Home/Button";
 import { SectionBorder } from "../Home/SectionBorder";
+import GlobalLayout from "../Layout/GlobalLayout";
+
 
 const AskQuestion = () => {
   const [formData, setFormData] = useState({
@@ -55,7 +57,7 @@ const AskQuestion = () => {
       if (response.status === 201) {
         setSuccessMessage("Question asked successfully!");
         setTimeout(() => {
-          navigate("/questions"); // Redirect to questions list or homepage
+          navigate("/allQuestions"); // Redirect to questions list or homepage
         }, 2000);
       }
     } catch (error) {
@@ -82,28 +84,11 @@ const AskQuestion = () => {
 
 
   return (
+    <GlobalLayout>
     <section className="min-h-screen flex flex-col overflow-x-hidden">
       <div className="w-full px-4 md:px-8 lg:px-16 flex-grow">
         <div className="absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
         {/* Motivational Message */}
-        <header className="bg-gradient py-4 px-6 flex justify-between items-center ">
-          <div className="flex space-x-6">
-            <Button
-              onClick={() => navigate("/dashboard")}
-              className="bg-gray-700 text-white px-6 py-3 rounded-full hover:bg-white hover:text-black transition"
-            >
-              Dashboard
-            </Button>
-          </div>
-          {/* Logout Button at the Top Right */}
-          <Button
-            onClick={handleLogout}
-            className="bg-gray-700 text-white px-6 py-3 rounded-full  hover:bg-white hover:text-black transition"
-          >
-            Log Out
-          </Button>
-        </header>
-
         <SectionBorder>
           <div className="py-4 text-center">
             <p className="text-white text-2xl font-semibold">
@@ -137,7 +122,7 @@ const AskQuestion = () => {
                   name="question"
                   value={formData.question}
                   onChange={handleChange}
-                  className="w-full px-6 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                  className="w-full px-6 py-4 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
                   placeholder="Enter your question title"
                 />
                 {errors.question && (
@@ -157,7 +142,7 @@ const AskQuestion = () => {
                   value={formData.description}
                   onChange={handleChange}
                   rows="6"
-                  className="w-full px-6 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                  className="w-full px-6 py-4 border border-gray-300 rounded-lg text-black  focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
                   placeholder="Provide a detailed description of your question"
                 ></textarea>
                 {errors.description && (
@@ -174,21 +159,8 @@ const AskQuestion = () => {
           </div>
         </SectionBorder>
       </div>
-
-      {/* Footer */}
-      <footer className="text-white py-8 mt-10 border-gray-300 bg-gradient-to-br from-transparent to-gray-800">
-        <div className="text-center">
-          <p className="text-sm">
-            © {new Date().getFullYear()} Developed by Sammythedeveloper. All
-            rights reserved.
-          </p>
-          <p className="text-sm mt-2">
-            Built with <span className="text-blue-500">love</span> and
-            creativity.
-          </p>
-        </div>
-      </footer>
-    </section>
+      </section>
+      </GlobalLayout>
   );
 };
 

@@ -3,8 +3,7 @@ import api from "../../../Context/API";
 import { motion } from "framer-motion"; // for animations similar to Dashboard
 import { FaQuestionCircle } from "react-icons/fa"; // For the question icon in the button
 import { useNavigate } from "react-router-dom";
-import { Button } from "../Home/Button";
-import Header from "../Home/Header";
+import GlobalLayout from "../Layout/GlobalLayout";
 
 const AllQuestionList = () => {
   const [questions, setQuestions] = useState([]);
@@ -46,8 +45,8 @@ const AllQuestionList = () => {
   };
 
   return (
+    <GlobalLayout>
     <section className="min-h-screen flex flex-col">
-       <Header />
       <div className=" relative overflow-hidden flex flex-col flex-grow">
         {/* Hero Section */}
         <header className="bg-gradient py-20 px-6 flex justify-between items-center ">
@@ -124,22 +123,9 @@ const AllQuestionList = () => {
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="text-white py-8 mt-auto border-gray-300 bg-gradient-to-br from-transparent to-gray-800">
-          <div className="text-center">
-            <p className="text-sm">
-              © {new Date().getFullYear()} Developed by Sammythedeveloper. All
-              rights reserved.
-            </p>
-            <p className="text-sm mt-2">
-              Built with <span className="text-blue-500">love</span> and
-              creativity.
-            </p>
-          </div>
-        </footer>
       </div>
-    </section>
+      </section>
+      </GlobalLayout>
   );
 };
 

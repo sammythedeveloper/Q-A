@@ -20,20 +20,28 @@ export const navItems = [
       href: "#resources",
     },
 ];
-export const loginItems = [
-    {
-      buttonVariant: "tertiary",
-      name: "Login",
-      href: "/signin",
-    },
-    {
-      buttonVariant: "primary",
-      name: "SignUp",
-      href: "/signup",
-    },
-];
   
-export const Header = () => {
+export const Header = ({user}) => {
+  const loginItems = user
+  ? [
+      {
+        buttonVariant: "primary",
+        name: "SignOut",
+        href: "/", // Your sign-out route
+      },
+    ]
+  : [
+      {
+        buttonVariant: "tertiary",
+        name: "Login",
+        href: "/signin",
+      },
+      {
+        buttonVariant: "primary",
+        name: "SignUp",
+        href: "/signup",
+      },
+    ];
     return (
       <>
         <section className="overflow-x-hidden">

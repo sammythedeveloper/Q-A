@@ -28,25 +28,26 @@ async function answerquestion(req, res) {
   }
 }
 
-async function answerallquestions(req, res) {
+
+async function allanswers(req, res) {
   const { question_id } = req.params;
   try {
+    console.log('Received question_id:', question_id); // Add logging to ensure it's correct
+
     // Retrieve all answers for the specified question, along with the username of the user who posted the answer
     const [answers] = await dbConnection.query(
       `SELECT 
         answers.answer, 
         answers.user_id, 
-        users.username, 
-        questions.question_id 
-      FROM answer 
+        users.username
+      FROM answers 
       JOIN users ON answers.user_id = users.user_id 
-      JOIN question ON answers.question_id = questions.question_id 
       WHERE answers.question_id = ?`,
       [question_id]
     );
-    console.log(answers);
 
-    if (answers.length > 0) {
+    // Check if there are answers
+    if (Array.isArray(answers) && answers.length > 0) {
       return res.status(StatusCodes.OK).json(answers);
     } else {
       return res
@@ -54,11 +55,12 @@ async function answerallquestions(req, res) {
         .json({ msg: "No answers found for this question." });
     }
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching answers:", error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later!" });
   }
 }
 
-module.exports = { answerallquestions, answerquestion };
+
+module.exports = { allanswers, answerquestion };

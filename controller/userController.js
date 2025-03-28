@@ -83,13 +83,13 @@ async function login(req, res) {
     }
 
     const username = user[0].username;
-    const userid = user[0].userid;
+    const user_id = user[0].user_id;
 
-    const token = jwt.sign({ username, userid }, 'C2KlDKA0U9okSY6eSDcctbVC2idPDHeH', { expiresIn: "1d" });
+    const token = jwt.sign({ username, user_id }, 'C2KlDKA0U9okSY6eSDcctbVC2idPDHeH', { expiresIn: "1d" });
 
     return res
       .status(StatusCodes.OK)
-      .json({ msg: "user login successful", token, username });
+      .json({ msg: "user login successful", token, user_id, username });
   } catch (error) {
     console.log(error.message);
     return res

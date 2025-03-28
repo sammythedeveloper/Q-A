@@ -13,6 +13,7 @@
     --color-indigo-950: theme("colors.indigo.300");
     --color-border: theme("colors.gray.200/20%");
   }
+
 }
 
 .absolute-center {

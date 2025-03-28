@@ -54,46 +54,39 @@ export const Header = ({ user }) => {
       ];
 
   return (
-    <>
-      <section className="overflow-x-hidden">
-        <header className="relative z-40">
-          <div className="h-20 flex justify-between items-center -z-10">
-            <div className="flex gap-4 items-center">
-              <Link to="/dashboard">
-                <div
-                  className="size-10 bg-gray-200 bg-[conic-gradient(from_45deg,var(--color-violet-400),var(--color-fuchsia-400),var(--color-amber-300),var(--color-teal-300),var(--color-violet-400))]"
-                  style={{
-                    maskImage: `url(${logoImage})`,
-                    maskSize: "contain",
-                  }}
-                ></div>
-              </Link>
-              <div className="font-extrabold text-2xl">Q&A</div>
-            </div>
-            <div className="h-full hidden lg:block">
-              <nav className="h-full">
-                {navItems.map(({ name, href }) => (
-                  <a
-                    href={href}
-                    key={href}
-                    className="h-full px-10 relative font-bold text-xs tracking-widest text-white uppercase inline-flex items-center"
-                  >
-                    {name}
-                  </a>
-                ))}
-              </nav>
-            </div>
-            <div className="hidden sm:block lg:flex gap-4">
-              {loginItems.map(({ buttonVariant, name, href, onClick }) => (
-                <Button variant={buttonVariant} onClick={onClick}>
-                  {name}
-                </Button>
-              ))}
-            </div>
+    <header className=" sticky top-0 z-40 bg-zinc-900/50 backdrop-blur-lg ">
+      <div className=" container">
+        <div className="flex justify-between items-center h-24 md:h-28">
+          <div className="flex gap-4 items-center">
+            <Link to="/dashboard">
+              <div className=" font-heading text-4xl font-bold  ">
+                <h2>Flowture</h2>
+              </div>
+            </Link>
           </div>
-        </header>
-      </section>
-    </>
+          <div className="h-full hidden lg:block">
+            <nav className="h-full">
+              {navItems.map(({ name, href }) => (
+                <a
+                  href={href}
+                  key={href}
+                  className="h-full px-10 relative font-bold text-xs tracking-widest text-white uppercase inline-flex items-center"
+                >
+                  {name}
+                </a>
+              ))}
+            </nav>
+          </div>
+          <div className="hidden sm:block lg:flex gap-4">
+            {loginItems.map(({ buttonVariant, name, href, onClick }) => (
+              <Button variant={buttonVariant} onClick={onClick}>
+                {name}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </header>
   );
 };
 

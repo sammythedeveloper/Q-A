@@ -78,7 +78,7 @@ export const Landing = () => {
       <div className="w-full px-4 md:px-8 lg:px-16">
         <SectionBorder>
           <div className=" relative py-24 md:py-36 lg:py-48  isolate overflow-hidden [mask-image:liner-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
-            <div className=" absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
+          <div className=" absolute -z-10 inset-0 bg-black [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
             <div className="absolute inset-0 -z-10  ">
               <div className=" absolute-center">
                 <Hexagon className="size-[350px] " />

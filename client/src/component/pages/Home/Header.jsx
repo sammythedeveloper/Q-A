@@ -1,25 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./Button";
-import logoImage from "../../asset/sphereal-logo.svg";
-
-export const navItems = [
-  {
-    name: "Dashboard",
-    href: "dashboard",
-  },
-  {
-    name: "About",
-    href: "#about",
-  },
-  // {
-  //   name: "Community",
-  //   href: "#community",
-  // },
-  {
-    name: "Resources",
-    href: "#resources",
-  },
-];
+import { CutCornerButton } from "./CutCornerButton";
+import SignUp from "../Sign/SignUp";
+import SignIn from "../Sign/SignIn";
+// import logoImage from "../../asset/sphereal-logo.svg";
 
 export const Header = ({ user }) => {
   const navigate = useNavigate(); // Hook to handle redirection after logout
@@ -62,26 +46,29 @@ export const Header = ({ user }) => {
                 <h2>Flowture</h2>
               </div>
             </Link>
-            <div className="h-full  hidden lg:block ">
-              <nav className="h-full">
-                {navItems.map(({ name, href }) => (
-                  <a
-                    href={href}
-                    key={href}
-                    className="h-full px-10 relative font-bold text-xs tracking-widest text-white uppercase inline-flex items-center "
-                  >
-                    {name}
-                  </a>
-                ))}
-              </nav>
-            </div>
             <div className=" hidden sm:block lg:flex gap-4">
               {loginItems.map(({ buttonVariant, name, href }) => (
                 <Link to={href} key={name} className="w-full">
                   <Button variant={buttonVariant}>{name}</Button>
                 </Link>
               ))}
+          </div>
+          <div className=" flex gap-4 items-center">
+            <CutCornerButton className=" hidden md:inline-flex  ">
+              <SignUp/>
+              </CutCornerButton>
+              <CutCornerButton className="hidden md:inline-flex">
+                <SignIn />
+              </CutCornerButton>
+            <div className="size-10 relative">
+              <div className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className=" w-5 h-0.5 bg-zinc-300 -translate-y-1 "></div>
+              </div>
+              <div className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className=" w-5 h-0.5 bg-zinc-300 translate-y-1 "></div>
+              </div>
             </div>
+          </div>
           </div>
         </div>
       </header>

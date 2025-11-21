@@ -43,10 +43,10 @@ async function allquestions(req, res) {
 }
 
 async function singlequestion(req, res) {
-  const { question_id } = req.body;  // Destructure 'question_id' from req.body
+  const { questionId } = req.query; // Get 'questionId' from query parameters
 
   // Validate that 'question_id' is provided and is a valid number
-  if (!question_id || isNaN(question_id)) {
+  if (!questionId || isNaN(questionId)) {
     return res.status(400).json({ msg: "Invalid question_id provided" });
   }
 
@@ -55,7 +55,7 @@ async function singlequestion(req, res) {
     const [question] = await dbConnection.query(
       `SELECT question_id, user_id, question, description 
        FROM questions 
-       WHERE question_id = ?`, [question_id]
+       WHERE question_id = ?`, [questionId]
     );
 
     // Check if the question was found
@@ -71,6 +71,7 @@ async function singlequestion(req, res) {
     return res.status(500).json({ msg: "Something went wrong, please try again later!" });
   }
 }
+
 
   
   module.exports = { askquestion, allquestions, singlequestion }

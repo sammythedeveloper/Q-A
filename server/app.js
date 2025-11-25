@@ -5,10 +5,27 @@ const port = process.env.PORT || 3500;
 
 const cors = require("cors");
 
-app.use(cors({
-  origin: ['http://localhost:3000', 'https://sammythedeveloper.github.io/Q-A'],
-  credentials: true, // if you send cookies/auth headers
-}));
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://sammythedeveloper.github.io",
+  "https://sammythedeveloper.github.io/Q-A",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin (like curl or Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+    credentials: true,
+  })
+);
+
 
 
 //db connection

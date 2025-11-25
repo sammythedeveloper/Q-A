@@ -5,7 +5,11 @@ const port = process.env.PORT || 3500;
 
 const cors = require("cors");
 
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://sammythedeveloper.github.io/Q-A'],
+  credentials: true, // if you send cookies/auth headers
+}));
+
 
 //db connection
 const dbConnection = require("./db/dbConfig");

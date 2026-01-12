@@ -2,6 +2,12 @@ const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 
 async function authMiddleware(req, res, next) {
+
+  // ✅ ALLOW CORS PREFLIGHT REQUESTS
+  if (req.method === "OPTIONS") {
+    return next();
+  }
+
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer")) {
@@ -9,12 +15,15 @@ async function authMiddleware(req, res, next) {
       .status(StatusCodes.UNAUTHORIZED)
       .json({ msg: "Authentication invalid" });
   }
+
   const token = authHeader.split(" ")[1];
-  console.log(authHeader);
-  console.log(token);
 
   try {
-    const { username, userid } = jwt.verify(token, "C2KlDKA0U9okSY6eSDcctbVC2idPDHeH");
+    const { username, userid } = jwt.verify(
+      token,
+      process.env.JWT_SECRET 
+    );
+
     req.user = { username, userid };
     next();
   } catch (error) {
@@ -23,4 +32,5 @@ async function authMiddleware(req, res, next) {
       .json({ msg: "Authentication invalid" });
   }
 }
+
 module.exports = authMiddleware;

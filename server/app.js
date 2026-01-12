@@ -61,14 +61,17 @@ app.use("/api/answers",answerRoutes);
 
 
 
-async function start() {
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+// OPTIONAL: test DB separately
+(async () => {
   try {
-    const result = await dbConnection.execute("select 'test' ");
-    app.listen(port);
-    console.log("database connection established");
-    console.log(`listening on ${port}`);
-  } catch (error) {
-    console.log(error.message);
+    await dbConnection.execute("SELECT 1");
+    console.log("Database connected");
+  } catch (err) {
+    console.error("Database connection failed:", err.message);
   }
-}
-start();
+})();
+

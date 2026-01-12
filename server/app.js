@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.PORT || 3500;
 
 /* ===============================
-   ALLOWED ORIGINS (MUST BE FIRST)
+   ALLOWED ORIGINS
 ================================ */
 const allowedOrigins = [
   "http://localhost:3000",
@@ -15,34 +15,17 @@ const allowedOrigins = [
 ];
 
 /* ===============================
-   CORS CONFIG
+   CORS — SIMPLE & CORRECT
 ================================ */
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow Postman / server-to-server
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(
-        new Error(`CORS blocked: ${origin}`),
-        false
-      );
-    },
+    origin: allowedOrigins,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// Handle preflight requests explicitly
-app.options("*", cors());
-
 /* ===============================
-   JSON MIDDLEWARE
+   BODY PARSER
 ================================ */
 app.use(express.json());
 
@@ -63,7 +46,7 @@ app.use("/api/questions", questionsRoutes);
 app.use("/api/answers", answerRoutes);
 
 /* ===============================
-   SERVER START
+   START SERVER
 ================================ */
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);

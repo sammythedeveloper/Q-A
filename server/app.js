@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const dbConnection = require("./db/dbConfig");
 
 const app = express();
 const port = process.env.PORT || 3500;
@@ -15,24 +16,28 @@ const allowedOrigins = [
 ];
 
 /* ===============================
-   CORS — SIMPLE & CORRECT
+   CORS — FULLY ENABLED FOR PRE-FLIGHT
 ================================ */
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow Postman / curl
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error(`CORS policy does not allow access from ${origin}`), false);
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// OPTIONS preflight handler for all routes
+app.options("*", cors());
 
 /* ===============================
    BODY PARSER
 ================================ */
 app.use(express.json());
-
-/* ===============================
-   DB CONNECTION
-================================ */
-const dbConnection = require("./db/dbConfig");
 
 /* ===============================
    ROUTES

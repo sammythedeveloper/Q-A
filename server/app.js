@@ -7,7 +7,8 @@ const cors = require("cors");
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://sammythedeveloper.github.io"
+  "https://sammythedeveloper.github.io",
+  "https://sammythedeveloper.github.io/Q-A",
 ];
 
 app.use(
@@ -15,15 +16,23 @@ app.use(
     origin: function (origin, callback) {
       // allow requests with no origin (like curl or Postman)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        const msg = `CORS policy does not allow access from ${origin}`;
         return callback(new Error(msg), false);
       }
-      return callback(null, true);
     },
     credentials: true,
   })
 );
+
+app.options("*", cors({
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 
 

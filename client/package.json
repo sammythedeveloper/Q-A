@@ -3,6 +3,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://q-a-production.up.railway.app",
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@testing-library/jest-dom": "^5.17.0",

@@ -7,8 +7,7 @@ const cors = require("cors");
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://sammythedeveloper.github.io",
-  "https://sammythedeveloper.github.io/Q-A",
+  "https://sammythedeveloper.github.io"
 ];
 
 app.use(

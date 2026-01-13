@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT;
 
 const allowedOrigins = [
   "http://localhost:3000",
@@ -39,7 +39,7 @@ app.use((err, req, res, next) => {
 });
 
 // START SERVER
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`🚀 Server running on port ${port}`);
 });
 

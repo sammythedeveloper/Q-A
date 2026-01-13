@@ -39,9 +39,10 @@ app.use((err, req, res, next) => {
 });
 
 // START SERVER
-app.listen(port, "0.0.0.0", () => {
+app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
 });
+
 
 // DB TEST (SAFE)
 const dbConnection = require("./db/dbConfig");

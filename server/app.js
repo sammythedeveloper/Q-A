@@ -15,15 +15,17 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
+      // allow requests with no origin (Postman, curl)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error("CORS blocked"));
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(null, false); // don't throw Error, just deny
     },
     credentials: true,
   })
 );
+
+app.options("*", cors()); // allow preflight
+
 app.get("/", (req, res) => res.json({ msg: "Server is alive!" }));
 
 app.options("*", cors());
@@ -33,6 +35,8 @@ app.use(express.json());
 app.use("/api/users", require("./routes/userRoute"));
 app.use("/api/questions", require("./routes/questionRoute"));
 app.use("/api/answers", require("./routes/answerRoute"));
+app.use("/api/users", require("./routes/userRoute"));
+
 
 // GLOBAL ERROR HANDLER (CRITICAL)
 app.use((err, req, res, next) => {

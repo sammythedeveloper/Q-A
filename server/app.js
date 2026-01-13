@@ -38,7 +38,7 @@ app.get("/api/test", async (req, res) => {
     console.log("DB query worked:", rows);
     res.json({ msg: "DB query works!" });
   } catch (err) {
-    console.error("DB query failed:", err);
+    console.error("DB query failed:", err.message);
     res.status(500).json({ msg: "DB query failed", error: err.message });
   }
 });

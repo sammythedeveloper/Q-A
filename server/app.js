@@ -3,13 +3,14 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3500;
 
 const allowedOrigins = [
   "http://localhost:3000",
   "https://sammythedeveloper.github.io",
   "https://sammythedeveloper.github.io/Q-A",
 ];
+
 
 app.use(
   cors({
@@ -23,6 +24,7 @@ app.use(
     credentials: true,
   })
 );
+app.get("/", (req, res) => res.json({ msg: "Server is alive!" }));
 
 app.options("*", cors());
 app.use(express.json());

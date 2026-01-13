@@ -43,6 +43,12 @@ app.get("/api/test", async (req, res) => {
   }
 });
 
+app.get("/api/test", (req, res) => {
+  console.log("Test route hit!");
+  res.json({ msg: "Server is responding!" });
+});
+
+
 
 /* ===============================
    ROUTES

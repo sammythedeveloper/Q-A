@@ -35,13 +35,14 @@ app.use(express.json()); // body parser
 app.get("/api/test", async (req, res) => {
   try {
     const [rows] = await dbConnection.query("SELECT 1");
-    console.log("DB query worked", rows);
+    console.log("DB query worked:", rows);
     res.json({ msg: "DB query works!" });
   } catch (err) {
     console.error("DB query failed:", err);
     res.status(500).json({ msg: "DB query failed", error: err.message });
   }
 });
+
 
 /* ===============================
    ROUTES

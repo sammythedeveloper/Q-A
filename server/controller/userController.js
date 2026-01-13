@@ -7,6 +7,8 @@ const { StatusCodes } = require("http-status-codes");
 
 const jwt = require("jsonwebtoken");
 async function register(req, res) {
+  console.log("REGISTER HIT");
+  console.log("BODY:", req.body);
   const { username, firstname, lastname, email, password } = req.body;
   if (!email || !password || !firstname || !lastname || !username) {
     return res

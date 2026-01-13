@@ -42,6 +42,11 @@ app.use(express.json());
 /* ===============================
    ROUTES
 ================================ */
+app.use((req, res, next) => {
+  console.log("➡️ Incoming:", req.method, req.originalUrl);
+  next();
+});
+
 const userRoutes = require("./routes/userRoute");
 const questionsRoutes = require("./routes/questionRoute");
 const answerRoutes = require("./routes/answerRoute");

@@ -20,16 +20,20 @@ const allowedOrigins = [
 ================================ */
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow Postman / curl
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-      return callback(new Error(`CORS policy does not allow access from ${origin}`), false);
+    origin: (origin, callback) => {
+      // allow requests with no origin (Postman, mobile apps, curl)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 
 // OPTIONS preflight handler for all routes
 app.options("*", cors());

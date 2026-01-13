@@ -87,7 +87,7 @@ async function login(req, res) {
     const username = user[0].username;
     const user_id = user[0].user_id;
 
-    const token = jwt.sign({ username, user_id }, 'C2KlDKA0U9okSY6eSDcctbVC2idPDHeH', { expiresIn: "1d" });
+    const token = jwt.sign({ username, user_id },  process.env.JWT_SECRET, { expiresIn: "1d" });
 
     return res
       .status(StatusCodes.OK)
@@ -102,9 +102,9 @@ async function login(req, res) {
 
 async function checkUser(req, res) {
   const username = req.user.username;
-  const userid = req.user.userid;
+  const user_id = req.user.userid;
 
-  res.status(StatusCodes.OK).json({ msg: "valid user", username, userid });
+  res.status(StatusCodes.OK).json({ msg: "valid user", username, user_id });
 }
 
 module.exports = { register, login, checkUser };

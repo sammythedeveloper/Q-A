@@ -29,14 +29,20 @@ app.use(
 app.use(express.json());
 
 /* ===============================
-   TEST ROUTE
+   DB CHECK ROUTE
 ================================ */
-app.get("/api/test", async (req, res) => {
+app.get("/api/db-check", async (req, res) => {
   try {
-    await dbConnection.query("SELECT 1");
-    res.json({ msg: "Server + DB OK" });
+    const [rows] = await dbConnection.query("SELECT VERSION() AS version");
+    res.json({
+      connected: true,
+      mysqlVersion: rows[0].version,
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      connected: false,
+      error: err.message,
+    });
   }
 });
 
@@ -56,10 +62,10 @@ app.use((err, req, res, next) => {
 });
 
 /* ===============================
-   START SERVER
+   START SERVER (ONLY ONCE)
 ================================ */
-app.listen(port, () => {
-  console.log(`🚀 Server running on port ${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`🚀 Server running on 0.0.0.0:${port}`);
 });
 
 /* ===============================

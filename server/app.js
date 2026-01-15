@@ -18,37 +18,27 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true); // allow Postman, curl
+      if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) return callback(null, true);
-      return callback(null, false);
+      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
   })
 );
 
-app.options("*", cors()); // allow preflight
-app.use(express.json()); // body parser
+app.use(express.json());
 
 /* ===============================
    TEST ROUTE
 ================================ */
 app.get("/api/test", async (req, res) => {
   try {
-    const [rows] = await dbConnection.query("SELECT 1");
-    console.log("DB query worked:", rows);
-    res.json({ msg: "DB query works!" });
+    await dbConnection.query("SELECT 1");
+    res.json({ msg: "Server + DB OK" });
   } catch (err) {
-    console.error("DB query failed:", err.message);
-    res.status(500).json({ msg: "DB query failed", error: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
-
-app.get("/api/test", (req, res) => {
-  console.log("Test route hit!");
-  res.json({ msg: "Server is responding!" });
-});
-
-
 
 /* ===============================
    ROUTES

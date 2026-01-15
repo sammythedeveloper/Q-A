@@ -14,6 +14,12 @@
 
 const mysql = require("mysql2");
 
-const dbConnection = mysql.createPool(process.env.MYSQL_URL).promise();
+const dbConnection = mysql.createPool({
+  uri: process.env.MYSQL_URL,      // Use the variable you set in Railway
+  waitForConnections: true,
+  connectionLimit: 10,
+  ssl: { rejectUnauthorized: false },  // Required for Private Network
+}).promise();
 
 module.exports = dbConnection;
+

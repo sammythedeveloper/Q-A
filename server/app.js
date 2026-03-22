@@ -1,53 +1,83 @@
 require("dotenv").config();
 const express = require("express");
-const app = express();
-const port = 3500;
-
 const cors = require("cors");
-
-app.use(cors());
-
-//db connection
 const dbConnection = require("./db/dbConfig");
 
-//user routes middleware file
-const userRoutes = require("./routes/userRoute");
+const app = express();
+const port = process.env.PORT; // NO fallback
 
-//questions routes middleware
-const questionsRoutes = require("./routes/questionRoute");
 
-//answer route middleware
 
-const answerRoutes = require("./routes/answerRoute");
+/* ===============================
+   CORS CONFIG
+================================ */
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://sammythedeveloper.github.io",
+  "https://sammythedeveloper.github.io/Q-A",
+];
 
-//authentication middleware
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 
-const authMiddleware = require("./middleware/authMiddleware");
-
-// json middleware to extract jason data
 app.use(express.json());
 
-//user routes middleware
-app.use("/api/users", userRoutes);
-
-//questions routes middleware??
-
-app.use("/api/questions", questionsRoutes);
-
-//answer routes middleware
-
-app.use("/api/answers",answerRoutes);
-
-
-
-async function start() {
+/* ===============================
+   DB CHECK ROUTE
+================================ */
+app.get("/api/db-check", async (req, res) => {
   try {
-    const result = await dbConnection.execute("select 'test' ");
-    app.listen(port);
-    console.log("database connection established");
-    console.log(`listening on ${port}`);
-  } catch (error) {
-    console.log(error.message);
+    const [rows] = await dbConnection.query("SELECT VERSION() AS version");
+    res.json({
+      connected: true,
+      mysqlVersion: rows[0].version,
+    });
+  } catch (err) {
+    res.status(500).json({
+      connected: false,
+      error: err.message,
+    });
   }
-}
-start();
+});
+
+/* ===============================
+   ROUTES
+================================ */
+app.use("/api/users", require("./routes/userRoute"));
+app.use("/api/questions", require("./routes/questionRoute"));
+app.use("/api/answers", require("./routes/answerRoute"));
+
+/* ===============================
+   GLOBAL ERROR HANDLER
+================================ */
+app.use((err, req, res, next) => {
+  console.error("🔥 GLOBAL ERROR:", err.message);
+  res.status(500).json({ msg: err.message });
+});
+
+/* ===============================
+   START SERVER (ONLY ONCE)
+================================ */
+app.listen(port, "0.0.0.0", () => {
+  console.log(`🚀 Server running on 0.0.0.0:${port}`);
+});
+
+/* ===============================
+   DB TEST AT START
+================================ */
+(async () => {
+  try {
+    await dbConnection.execute("SELECT 1");
+    console.log("✅ Database connected");
+  } catch (err) {
+    console.error("❌ Database connection failed:", err.message);
+  }
+})();

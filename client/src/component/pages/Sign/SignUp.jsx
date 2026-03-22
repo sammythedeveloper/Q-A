@@ -1,11 +1,7 @@
-import api from "../../../Context/API";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import Header from "../Home/Header";
-import { SectionBorder } from "../Home/SectionBorder";
-import { Planet } from "../Home/Planet";
-import { Orbit } from "../Home/Orbit";
+import api from "../../../Context/API";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -18,288 +14,207 @@ const SignUp = () => {
   });
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
-  const [showModal, setShowModal] = useState(false); // State for showing modal
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Simple validation check
+    let vErrors = {};
+    if (formData.password !== formData.confirmPassword)
+      vErrors.confirmPassword = "Passwords match failed";
 
-    // Validation
-    let validationErrors = {};
-    if (!formData.username) validationErrors.username = "Username is required";
-    if (!formData.firstname)
-      validationErrors.firstname = "First name is required";
-    if (!formData.lastname) validationErrors.lastname = "Last name is required";
-    if (!formData.email) validationErrors.email = "Email is required";
-    if (!formData.password) validationErrors.password = "Password is required";
-    if (!formData.confirmPassword)
-      validationErrors.confirmPassword = "Please confirm your password";
-    if (formData.password !== formData.confirmPassword) {
-      validationErrors.confirmPassword = "Passwords do not match";
-    }
+    if (Object.keys(vErrors).length > 0) return setErrors(vErrors);
 
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      try {
-        const response = await api.post("/users/register", formData);
-        console.log(response.data);
-
-        if (response.status === 201) {
-          setSuccessMessage("Registration successful!");
-          setShowModal(true); // Show the modal on success
-          setFormData({
-            username: "",
-            firstname: "",
-            lastname: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-          });
-          setErrors({});
-
-          // Navigate to the sign-in page after successful registration
-          setTimeout(() => {
-            navigate("/signin"); // Navigate to the Sign In page
-          }, 3000); // Adjust the timeout (3000 ms = 3 seconds)
-        }
-      } catch (error) {
-        if (error.response) {
-          setErrors((prev) => ({
-            ...prev,
-            server:
-              error.response.data.msg ||
-              "Registration failed. Please try again.",
-          }));
-        } else {
-          console.error("An unexpected error occurred:", error.message);
-        }
+    try {
+      const response = await api.post("/users/register", formData);
+      if (response.status === 201) {
+        setSuccessMessage("Account created! Redirecting...");
+        setTimeout(() => navigate("/signin"), 2000);
       }
+    } catch (error) {
+      setErrors({ server: error.response?.data?.msg || "Registration failed" });
     }
   };
 
   return (
-    <div className=" text-white md:px-8">
-      <Header />
-      <SectionBorder>
-        <div className=" relative py-24 md:py-36 lg:py-48 isolate overflow-hidden [mask-image:liner-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
-          <div className=" absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
-          <div className="absolute inset-0 -z-10  ">
-            <div className=" absolute-center">
-              <Orbit className="size-[350px] " />
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 md:p-10 font-sans">
+      <div className="w-full max-w-6xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[800px] border border-slate-200">
+        {/* Left Sidebar: Brand Section (Matches SignIn) */}
+        <div className="w-full md:w-[40%] bg-[#030712] p-12 md:p-20 flex flex-col justify-center text-white relative overflow-hidden">
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px]"></div>
+          <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+
+          <div className="relative z-10 flex flex-col gap-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 w-fit mb-4">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              </span>
+              <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">
+                Join the Alpha
+              </span>
             </div>
-            <div className=" absolute-center">
-              <Orbit className="size-[600px]" />
-            </div>
-            <div className=" absolute-center">
-              <Orbit className="size-[850px]" />
-            </div>
-            <div className=" absolute-center">
-              <Orbit className="size-[1100px]" />
-            </div>
-            <div className=" absolute-center">
-              <Orbit className="size-[1350px]" />
+
+            <h1 className="text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
+              Stacky
+            </h1>
+            <div className="w-12 h-1.5 bg-blue-600 rounded-full"></div>
+
+            <p className="text-lg md:text-xl text-slate-400 leading-relaxed font-medium max-w-sm">
+              Create an account to ask questions, share knowledge, and{" "}
+              <span className="text-white">grow your dev career.</span>
+            </p>
+
+            <div className="mt-12 flex items-center gap-4 text-slate-500 text-sm border-t border-slate-800/50 pt-8">
+              <p className="font-medium tracking-tight italic">
+                "The best place for junior devs to learn."
+              </p>
             </div>
           </div>
-          <div className="flex items-center justify-center ">
-            <motion.div
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white p-8 sm:max-w-md max-w-sm rounded-lg shadow-lg  w-full"
-            >
-              <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
-                Create Your Account
-              </h2>
-              {successMessage && (
-                <p className="text-green-500 text-center mb-4">
-                  {successMessage}
-                </p>
-              )}
-              {errors.server && (
-                <p className="text-red-500 text-center mb-4">{errors.server}</p>
-              )}
-              <form onSubmit={handleSubmit} className="space-y-6  text-black ">
-                <div>
-                  <label htmlFor="username" className="block">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    value={formData.username}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition "
-                    placeholder="Enter your username"
-                  />
-                  {errors.username && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.username}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label htmlFor="firstname" className="block ">
+        </div>
+
+        {/* Right Section: Expanded Form area */}
+        <div className="w-full md:w-[60%] p-8 md:p-16 lg:p-24 flex flex-col justify-center bg-white">
+          <div className="max-w-2xl w-full mx-auto">
+            <h2 className="text-3xl font-bold text-slate-900 mb-2">
+              Create an account
+            </h2>
+            <p className="text-slate-500 mb-10">
+              Already a member?{" "}
+              <Link
+                to="/signin"
+                className="text-blue-600 font-semibold hover:underline"
+              >
+                Log In
+              </Link>
+            </p>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Grid for First/Last Name */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">
                     First Name
                   </label>
                   <input
                     type="text"
-                    id="firstname"
                     name="firstname"
-                    value={formData.firstname}
+                    placeholder="John"
+                    className="input-style"
                     onChange={handleChange}
-                    className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                    placeholder="Enter your first name"
                   />
-                  {errors.firstname && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.firstname}
-                    </p>
-                  )}
                 </div>
-                <div>
-                  <label htmlFor="lastname" className="block">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">
                     Last Name
                   </label>
                   <input
                     type="text"
-                    id="lastname"
                     name="lastname"
-                    value={formData.lastname}
+                    placeholder="Doe"
+                    className="input-style"
                     onChange={handleChange}
-                    className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition "
-                    placeholder="Enter your last name"
                   />
-                  {errors.lastname && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.lastname}
-                    </p>
-                  )}
                 </div>
-                <div>
-                  <label htmlFor="email" className="block ">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition "
-                    placeholder="Enter your email"
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-                  )}
-                </div>
-                <div>
-                  <label htmlFor="password" className="block">
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="your username"
+                  className="input-style"
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="name@company.com"
+                  className="input-style"
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* Grid for Password */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">
                     Password
                   </label>
                   <input
                     type="password"
-                    id="password"
                     name="password"
-                    value={formData.password}
+                    placeholder="••••••••"
+                    className="input-style"
                     onChange={handleChange}
-                    className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition "
-                    placeholder="Enter your password"
                   />
-                  {errors.password && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.password}
-                    </p>
-                  )}
                 </div>
-                <div>
-                  <label htmlFor="confirmPassword" className="block">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">
                     Confirm Password
                   </label>
                   <input
                     type="password"
-                    id="confirmPassword"
                     name="confirmPassword"
-                    value={formData.confirmPassword}
+                    placeholder="••••••••"
+                    className="input-style"
                     onChange={handleChange}
-                    className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                    placeholder="Confirm your password"
                   />
-                  {errors.confirmPassword && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.confirmPassword}
-                    </p>
-                  )}
                 </div>
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-green-500  transition"
-                >
-                  Sign Up
-                </button>
-              </form>
-              <p className="mt-4 text-center  text-black">
-                Already have an account?{" "}
-                <Link to="/signin" className="text-blue-600 hover:underline">
-                  Sign in
-                </Link>
+              </div>
+
+              {/* Status Messages */}
+              {successMessage && (
+                <p className="text-emerald-500 font-medium text-sm text-center">
+                  {successMessage}
+                </p>
+              )}
+              {errors.server && (
+                <p className="text-red-500 font-medium text-sm text-center">
+                  {errors.server}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="w-full bg-blue-400  hover:bg-blue-600 text-white py-4 rounded-xl font-bold transition-all shadow-xl active:scale-[0.98] mt-4"
+              >
+                Create Account
+              </button>
+
+              <p className="text-[11px] text-slate-400 text-center mt-6">
+                By clicking "Create Account", you agree to our{" "}
+                <span className="text-blue-500 underline cursor-pointer">
+                  Terms of Service
+                </span>{" "}
+                and{" "}
+                <span className="text-blue-500 underline cursor-pointer">
+                  Privacy Policy
+                </span>
+                .
               </p>
-            </motion.div>
-          </div>
-          <div className="relative isolate max-w-5xl mx-auto">
-            <div className=" absolute left-1/2 top-0 ">
-              <Planet
-                size="lg"
-                color="white"
-                className=" -translate-x-[436px] -translate-y-[176px] rotate-135 "
-              />
-              <Planet
-                size="md"
-                color="blue"
-                className=" translate-x-[434px] -translate-y-[260px] -rotate-135 "
-              />
-              <Planet
-                size="lg"
-                color="green"
-                className=" translate-x-[308px] -translate-y-[572px] -rotate-135 "
-              />
-              <Planet
-                size="sm"
-                color="orange"
-                className=" -translate-x-[288px] -translate-y-[682px] rotate-135 "
-              />
-            </div>
+            </form>
           </div>
         </div>
-        <footer className="text-white py-8 border-t border-gray-300 bg-gradient-to-br from-transparent to-gray-800 ">
-          <div className=" text-center">
-            <p className="text-sm">
-              {" "}
-              © {new Date().getFullYear()} Developed by Sammythedeveloper. All
-              rights reserved.
-            </p>
-            <p className="text-sm mt-2">
-              Built with <span className="text-blue-500">love</span> and
-              creativity.
-            </p>
-          </div>
-        </footer>
-      </SectionBorder>
+      </div>
     </div>
   );
 };
+
+
 
 export default SignUp;

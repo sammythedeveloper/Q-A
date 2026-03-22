@@ -1,202 +1,175 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-import { motion } from "framer-motion";
-import api from "../../../Context/API"; // Assuming you have an api instance
-import Header from "../Home/Header";
-import { Orbit } from "../Home/Orbit";
-import { Planet } from "../Home/Planet";
-import { SectionBorder } from "../Home/SectionBorder";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../../Context/API";
 
 const SignIn = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  });
-
-  const navigate = useNavigate(); // Initialize navigate
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const validateForm = () => {
-    let formErrors = {};
-    if (!formData.email) {
-      formErrors.email = "Email is required.";
-    }
-    if (!formData.password) {
-      formErrors.password = "Password is required.";
-    }
-    setErrors(formErrors);
-    return Object.keys(formErrors).length === 0;
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      try {
-        // Make the POST request to the backend
-        const response = await api.post("/users/login", formData);
-        console.log(response.data); // You can remove this after testing
+    try {
+      const response = await api.post("/users/login", formData);
+      if (response.data.token) {
+        // Save BOTH the token and the username
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("username", response.data.username);
 
-        if (response.data.token) {
-          // Save the token in localStorage
-          localStorage.setItem("token", response.data.token);
-          if (response.data.user_id) {
-            localStorage.setItem("user_id", response.data.user_id);
-          }
-
-          // Redirect to the dashboard
-          navigate("/dashboard");
-        }
-      } catch (error) {
-        console.error(error);
-        if (error.response) {
-          setErrors({ ...errors, general: error.response.data.msg });
-        }
+        navigate("/dashboard");
       }
+    } catch (error) {
+      setErrors({ general: error.response?.data?.msg || "Login failed" });
     }
   };
 
   return (
-    <div className="md:px-8">
-      <Header />
-      <SectionBorder>
-      <div className=" relative py-24 md:py-36 lg:py-48 isolate overflow-hidden [mask-image:liner-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
-        <div className=" absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
-        <div className="absolute inset-0 -z-10  ">
-          <div className=" absolute-center">
-            <Orbit className="size-[350px] " />
-          </div>
-          <div className=" absolute-center">
-            <Orbit className="size-[600px]" />
-          </div>
-          <div className=" absolute-center">
-            <Orbit className="size-[850px]" />
-          </div>
-          <div className=" absolute-center">
-            <Orbit className="size-[1100px]" />
-          </div>
-          <div className=" absolute-center">
-            <Orbit className="size-[1350px]" />
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+      {/* Main Tablet-style Wrapper */}
+      <div className="w-full max-w-6xl bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[700px] border border-slate-200">
+        {/* Left Sidebar: Brand Section */}
+        {/* Left Sidebar: Brand Section */}
+        <div className="w-full md:w-[40%] bg-[#030712] p-12 md:p-20 flex flex-col justify-center text-white relative overflow-hidden">
+          {/* 1. Modern Glassmorphic Glows (Much cleaner than floating symbols) */}
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px]"></div>
+          <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+
+          {/* 2. Content Container */}
+          <div className="relative z-10 flex flex-col gap-6">
+            {/* Minimalist Live Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 w-fit mb-4">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              </span>
+              <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">
+                Community Live
+              </span>
+            </div>
+
+            {/* Brand Name - Using Sans for a premium feel */}
+            <h1 className="text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
+              Stacky
+            </h1>
+
+            {/* Simple Accent Divider */}
+            <div className="w-12 h-1.5 bg-blue-600 rounded-full"></div>
+
+            {/* Body Text - Swapped mono for a clean medium sans */}
+            <p className="text-lg md:text-xl text-slate-400 leading-relaxed font-medium max-w-sm">
+              Expert insights and{" "}
+              <span className="text-white font-semibold">
+                curated components
+              </span>{" "}
+              for the modern developer.
+            </p>
+
+            {/* Social Proof Detail */}
+            <div className="mt-12 flex items-center gap-4 text-slate-500 text-sm border-t border-slate-800/50 pt-8">
+              <div className="flex -space-x-3">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="w-9 h-9 rounded-full border-2 border-[#030712] bg-slate-800 flex items-center justify-center text-xs ring-1 ring-slate-700"
+                  >
+                    {i === 1 ? "👨‍💻" : i === 2 ? "👩‍🚀" : "👨‍🎨"}
+                  </div>
+                ))}
+              </div>
+              <p className="font-medium tracking-tight">
+                Joined the <span className="text-blue-400">Community</span>
+              </p>
+            </div>
           </div>
         </div>
-        <div className="flex items-center justify-center ">
-          <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-white  border-white p-8 rounded-lg max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl w-full bg-gradient-to-br from-transparent"
-          >
-            <h2 className="text-3xl font-semibold text-center  text-black mb-6">
-              Sign In to Your Account
+
+        {/* Right Section: Form area */}
+        <div className="w-full md:w-[60%] p-12 md:p-24 flex flex-col justify-center bg-white">
+          <div className="max-w-md w-full mx-auto">
+            <h2 className="text-3xl font-bold text-slate-900 mb-2">
+              Login to your account
             </h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <p className="text-slate-500 mb-8">
+              Don't have an account?{" "}
+              <Link
+                to="/signup"
+                className="text-blue-600 font-semibold hover:underline"
+              >
+                Sign Up
+              </Link>
+            </p>
+            <div className="relative flex py-5 items-center">
+              <div className="flex-grow border-t border-slate-200"></div>
+              <span className="flex-shrink mx-4 text-slate-400 text-xs ">
+                Welcome Back
+              </span>
+              <div className="flex-grow border-t border-slate-200"></div>
+            </div>
+            {/* Main Form */}
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="email" className="block text-black">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Email
                 </label>
                 <input
                   type="email"
-                  id="email"
                   name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-gray-800 ${
-                    errors.email ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-all outline-none"
                   placeholder="Enter your email"
+                  onChange={handleChange}
                 />
-                {errors.email && (
-                  <p className="text-red-600 text-sm mt-2">{errors.email}</p>
-                )}
               </div>
+
               <div>
-                <label htmlFor="password" className="block text-black ">
-                  Password
-                </label>
+                <div className="flex justify-between mb-2">
+                  <label className="text-sm font-semibold text-slate-700">
+                    Password
+                  </label>
+                  <a
+                    href="#"
+                    className="text-sm text-slate-400 hover:text-blue-600"
+                  >
+                    Forgot Password?
+                  </a>
+                </div>
                 <input
                   type="password"
-                  id="password"
                   name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-gray-800 ${
-                    errors.password ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-all outline-none"
                   placeholder="Enter your password"
+                  onChange={handleChange}
                 />
-                {errors.password && (
-                  <p className="text-red-600 text-sm mt-2">{errors.password}</p>
-                )}
               </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="remember"
+                  className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                />
+                <label htmlFor="remember" className="text-sm text-slate-400">
+                  Remember me
+                </label>
+              </div>
+
               {errors.general && (
-                <p className="text-red-600 text-sm mt-2">{errors.general}</p>
-              )}{" "}
-              {/* Display general error */}
+                <p className="text-red-500 text-sm">{errors.general}</p>
+              )}
+
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-green-500 transition"
+                className="w-full bg-blue-400 hover:bg-blue-500 text-white py-3.5 rounded-lg font-bold transition-all shadow-lg active:scale-[0.98]"
               >
-                Sign In
+                Login
               </button>
             </form>
-            <p className="mt-4 text-center text-black">
-              Don't have an account?{" "}
-              <Link to="/signup" className="text-blue-600 hover:underline">
-                Sign Up
-              </Link>
-            </p>
-          </motion.div>
-        </div>
-        <div className="relative isolate max-w-5xl mx-auto">
-          <div className=" absolute left-1/2 top-0 ">
-            <Planet
-              size="lg"
-              color="white"
-              className=" -translate-x-[436px] -translate-y-[176px] rotate-135 "
-            />
-            <Planet
-              size="md"
-              color="blue"
-              className=" translate-x-[434px] -translate-y-[260px] -rotate-135 "
-            />
-            <Planet
-              size="lg"
-              color="green"
-              className=" translate-x-[308px] -translate-y-[572px] -rotate-135 "
-            />
-            <Planet
-              size="sm"
-              color="orange"
-              className=" -translate-x-[288px] -translate-y-[682px] rotate-135 "
-            />
           </div>
         </div>
       </div>
-      <footer className="text-white py-8 border-t border-gray-300 bg-gradient-to-br from-transparent to-gray-800 ">
-        <div className=" text-center">
-          <p className="text-sm">
-            {" "}
-            © {new Date().getFullYear()} Developed by Sammythedeveloper. All
-            rights reserved.
-          </p>
-          <p className="text-sm mt-2">
-            Built with <span className="text-blue-500">love</span> and
-            creativity.
-          </p>
-        </div>
-        </footer>
-        </SectionBorder>
     </div>
   );
 };

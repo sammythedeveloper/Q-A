@@ -14,20 +14,20 @@
     --color-border: theme("colors.gray.200/20%");
   }
 }
+@layer components {
+  /* This turns your variable into a reusable CSS class */
+  .input-style {
+    @apply w-full px-4 py-3 rounded-xl border border-slate-200 
+           focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 
+           transition-all outline-none bg-slate-50/50 placeholder:text-slate-400 
+           text-slate-900; /* Added text-slate-900 so typing is visible on white background */
+  }
 
-.absolute-center {
-  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 isolate -z-10;
-}
-
-/* Ensure body and html take the full height and have the background color */
-@layer base {
-  body {
-    font-family: var(--font-space-grotesk); /* Use Space Grotesk by default */
-    background-color: #030712; /* bg-gray-950 */
-    color: #d1d5db; /* text-gray-300 */
-    overflow-x: hidden;
+  .absolute-center {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 isolate -z-10;
   }
 }
+
 html {
   scroll-behavior: smooth;
 }

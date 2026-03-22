@@ -1,99 +1,79 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./Button";
-import logoImage from "../../asset/sphereal-logo.svg";
 
 export const navItems = [
-  {
-    name: "Dashboard",
-    href: "dashboard",
-  },
-  {
-    name: "About",
-    href: "#about",
-  },
-  // {
-  //   name: "Community",
-  //   href: "#community",
-  // },
-  {
-    name: "Resources",
-    href: "#resources",
-  },
+  { name: "Dashboard", href: "/dashboard" },
+  { name: "Explore", href: "/explore-questions" },
+  { name: "Resources", href: "#resources" },
 ];
 
 export const Header = ({ user }) => {
-  const navigate = useNavigate(); // Hook to handle redirection after logout
+  const navigate = useNavigate();
 
-  // Determine login items based on whether the user is authenticated
-  const loginItems = user
-    ? [
-        {
-          buttonVariant: "primary",
-          name: "SignOut",
-          // SignOut button will trigger the logout logic
-          onClick: () => {
-            // Remove the token from localStorage
-            localStorage.removeItem("token");
-
-            // Redirect the user to the home page
-            navigate("/");
-          },
-        },
-      ]
-    : [
-        {
-          buttonVariant: "tertiary",
-          name: "Login",
-          href: "/signin",
-        },
-        {
-          buttonVariant: "primary",
-          name: "SignUp",
-          href: "/signup",
-        },
-      ];
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/signin");
+  };
 
   return (
-    <>
-      <section className="overflow-x-hidden">
-        <header className="relative z-40">
-          <div className="h-20 flex justify-between items-center -z-10">
-            <div className="flex gap-4 items-center">
-              <Link to="/dashboard">
-                <div
-                  className="size-10 bg-gray-200 bg-[conic-gradient(from_45deg,var(--color-violet-400),var(--color-fuchsia-400),var(--color-amber-300),var(--color-teal-300),var(--color-violet-400))]"
-                  style={{
-                    maskImage: `url(${logoImage})`,
-                    maskSize: "contain",
-                  }}
-                ></div>
+    <header className="fixed top-0 left-0 w-full z-50 border-b border-white/5 bg-[#030712]/80 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto h-20 px-6 flex justify-between items-center">
+        
+        {/* --- Logo & Brand --- */}
+        <div className="flex gap-4 items-center group">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="size-9 bg-gradient-to-tr from-blue-600 to-indigo-400 rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.3)] group-hover:scale-110 transition-transform duration-300"></div>
+            <span className="font-extrabold text-2xl tracking-tighter text-white">
+              Stacky
+            </span>
+          </Link>
+        </div>
+
+        {/* --- Navigation --- */}
+        <nav className="hidden lg:flex items-center h-full">
+          {navItems.map(({ name, href }) => (
+            <Link
+              to={href}
+              key={name}
+              className="px-6 text-[11px] font-bold tracking-[0.2em] text-slate-400 uppercase hover:text-white transition-colors"
+            >
+              {name}
+            </Link>
+          ))}
+        </nav>
+
+        {/* --- Auth Actions --- */}
+        <div className="flex items-center gap-3">
+          {user ? (
+            <div className="flex items-center gap-4">
+              <div className="hidden sm:block text-right">
+                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none">Developer</p>
+                <p className="text-sm font-semibold text-white">My Account</p>
+              </div>
+              <Button 
+                variant="tertiary" 
+                onClick={handleLogout}
+                className="border-white/10 hover:bg-red-500/10 hover:text-red-400"
+              >
+                Sign Out
+              </Button>
+            </div>
+          ) : (
+            <>
+              <Link to="/signin" className="hidden sm:block">
+                <Button variant="tertiary">Login</Button>
               </Link>
-              <div className="font-extrabold text-2xl">Q&A</div>
-            </div>
-            <div className="h-full hidden lg:block">
-              <nav className="h-full">
-                {navItems.map(({ name, href }) => (
-                  <a
-                    href={href}
-                    key={href}
-                    className="h-full px-10 relative font-bold text-xs tracking-widest text-white uppercase inline-flex items-center"
-                  >
-                    {name}
-                  </a>
-                ))}
-              </nav>
-            </div>
-            <div className="hidden sm:block lg:flex gap-4">
-              {loginItems.map(({ buttonVariant, name, href, onClick }) => (
-                <Button variant={buttonVariant} onClick={onClick}>
-                  {name}
+              <Link to="/signup">
+                <Button variant="primary" className="shadow-lg shadow-blue-600/20">
+                  Join Free
                 </Button>
-              ))}
-            </div>
-          </div>
-        </header>
-      </section>
-    </>
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+    </header>
   );
 };
 

@@ -1,9 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'https://q-a-production.up.railway.app/api',
+  baseURL: "http://localhost:5500/api",
+  // baseURL: 'https://q-a-production.up.railway.app/api',
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 

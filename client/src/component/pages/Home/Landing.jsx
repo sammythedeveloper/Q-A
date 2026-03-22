@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Orbit } from "./Orbit";
 import { Button } from "./Button";
-import { Companies } from "./Companies";
+import { Companies, TechStack } from "./Companies";
+import Footer from "../Layout/Footer";
 
 export const navItems = [
   { name: "Features", href: "#feature" },
@@ -40,7 +41,7 @@ export const Landing = () => {
               <Button variant="tertiary">Login</Button>
             </Link>
             <Link to="/signup">
-              <Button variant="primary">Get Started</Button>
+              <Button variant="primary">Launch</Button>
             </Link>
           </div>
         </div>
@@ -140,20 +141,14 @@ export const Landing = () => {
         </div>
       </section>
 
-      {/* --- COMPANIES --- */}
-      <section className="py-20 border-y border-white/5">
-        <Companies />
-      </section>
+      {/* --- TECH STACK SECTION --- */}
+      <section className="relative border-y border-white/[0.05] bg-[#030712]">
+        {/* Optional: Add a very faint glow behind the tech stack */}
+        <div className="absolute inset-0 bg-blue-500/[0.02] pointer-events-none"></div>
 
-      {/* --- FOOTER --- */}
-      <footer className="py-12 text-center text-slate-500 border-t border-white/5">
-        <p className="text-sm font-medium">
-          © {new Date().getFullYear()} Stacky by Sammythedeveloper
-        </p>
-        <p className="text-xs mt-2 uppercase tracking-widest">
-          Built with love and React
-        </p>
-      </footer>
+        <TechStack />
+      </section>
+      <Footer />
     </div>
   );
 };

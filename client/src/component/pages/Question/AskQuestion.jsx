@@ -1,46 +1,30 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../../Context/API"; // Assuming this is your API instance
+import api from "../../../Context/API";
 import { Button } from "../Home/Button";
 import { motion } from "framer-motion";
-import { SectionBorder } from "../Home/SectionBorder";
 import GlobalLayout from "../Layout/GlobalLayout";
 
 const AskQuestion = () => {
-  const [formData, setFormData] = useState({
-    question: "",
-    description: "",
-  });
+  const [formData, setFormData] = useState({ question: "", description: "" });
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({});
-    setSuccessMessage("");
-
-    // Get the user_id from localStorage (assuming it is stored as 'user_id')
     const userId = localStorage.getItem("user_id");
 
-    // Form validation
     const validationErrors = {};
-    if (!formData.question)
-      validationErrors.question = "Question title is required";
+    if (!formData.question) validationErrors.question = "Title is required";
     if (!formData.description)
-      validationErrors.description = "Question description is required";
+      validationErrors.description = "Description is required";
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -49,121 +33,139 @@ const AskQuestion = () => {
 
     try {
       const response = await api.post("questions/askquestion", {
-        user_id: userId, // Add user_id here
+        user_id: userId,
         question: formData.question,
         description: formData.description,
       });
 
       if (response.status === 201) {
-        setSuccessMessage("Question asked successfully!");
-        setTimeout(() => {
-          navigate("/allQuestions"); // Redirect to questions list or homepage
-        }, 2000);
+        setSuccessMessage("Question published to the community!");
+        setTimeout(() => navigate("/allQuestions"), 1500);
       }
     } catch (error) {
-      if (error.response) {
-        setErrors({
-          server:
-            error.response.data.msg || "Something went wrong. Try again later.",
-        });
-      } else {
-        console.error("An unexpected error occurred:", error.message);
-        setErrors({ server: "An unexpected error occurred. Try again later." });
-      }
+      setErrors({
+        server: error.response?.data?.msg || "Server error. Try again.",
+      });
     }
-  };
-
-  // Navigate to dashboard or logout
-  const handleLogout = () => {
-    // Remove the token from localStorage
-    localStorage.removeItem("token");
-
-    // Redirect to sign-in page after logout
-    navigate("/signin");
   };
 
   return (
     <GlobalLayout>
-      <section className="min-h-screen flex flex-col overflow-x-hidden">
-        <div className="relative overflow-hidden py-20 flex-grow ">
-          <div className="container mx-auto px-6 text-center">
-            <div className="absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="text-3xl m-8 font-medium"
+      <div className="min-h-screen bg-[#030712] text-white font-sans pt-20">
+        <main className="max-w-6xl mx-auto px-6 py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            {/* --- Sidebar: Guidelines --- */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="lg:col-span-1 space-y-8"
             >
-              Asking questions is a step towards learning and growth.
-              Don't
-              hesitate to ask!
-            </motion.p>
-          </div>
-          <div className="bg-white shadow-xl rounded-lg p-10 max-w-4xl w-full mx-auto mt-10">
-            <h2 className="text-4xl font-extrabold text-gray-800 mb-8 text-center">
-              Ask a Question
-            </h2>
-            {successMessage && (
-              <p className="text-green-500 mb-4 text-center">
-                {successMessage}
-              </p>
-            )}
-            {errors.server && (
-              <p className="text-red-500 mb-4 text-center">{errors.server}</p>
-            )}
-            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label
-                  htmlFor="question"
-                  className="block text-gray-700 font-medium mb-3 text-lg"
-                >
-                  Question Title
-                </label>
-                <input
-                  type="text"
-                  id="question"
-                  name="question"
-                  value={formData.question}
-                  onChange={handleChange}
-                  className="w-full px-6 py-4 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
-                  placeholder="Enter your question title"
-                />
-                {errors.question && (
-                  <p className="text-red-500 text-sm mt-1">{errors.question}</p>
-                )}
+                <h1 className="text-4xl font-extrabold tracking-tighter mb-4">
+                  Ask the <span className="text-blue-500">Community</span>
+                </h1>
+                <p className="text-slate-400 font-medium leading-relaxed">
+                  Stuck on a bug? Need architectural advice? Our community of
+                  developers is here to help.
+                </p>
               </div>
-              <div>
-                <label
-                  htmlFor="description"
-                  className="block text-gray-700 font-medium mb-3 text-lg"
-                >
-                  Description
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  rows="6"
-                  className="w-full px-6 py-4 border border-gray-300 rounded-lg text-black  focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
-                  placeholder="Provide a detailed description of your question"
-                ></textarea>
-                {errors.description && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.description}
-                  </p>
-                )}
+
+              <div className="space-y-4 p-6 rounded-3xl bg-blue-500/5 border border-blue-500/10">
+                <h4 className="text-sm font-bold uppercase tracking-widest text-blue-400">
+                  Writing Tips
+                </h4>
+                <ul className="text-sm text-slate-400 space-y-3 font-medium">
+                  <li className="flex gap-2">
+                    <span>1.</span> Be specific with your title.
+                  </li>
+                  <li className="flex gap-2">
+                    <span>2.</span> Include code snippets if possible.
+                  </li>
+                  <li className="flex gap-2">
+                    <span>3.</span> Describe what you've already tried.
+                  </li>
+                </ul>
               </div>
-              <Button
-                type="submit"
-                className="bg-blue-900 text-white rounded-full hover:bg-green-700 transition w-full text-lg"
-              >
-                Submit Question
-              </Button>
-            </form>
+            </motion.div>
+
+            {/* --- Main Form: Glass Deck --- */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="lg:col-span-2 relative p-8 md:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/10 backdrop-blur-sm overflow-hidden"
+            >
+              {/* Subtle Gradient Glow */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px] -z-10"></div>
+
+              {successMessage && (
+                <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-bold text-center">
+                  {successMessage}
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {/* Question Title */}
+                <div className="space-y-3">
+                  <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">
+                    Question Title
+                  </label>
+                  <input
+                    type="text"
+                    name="question"
+                    value={formData.question}
+                    onChange={handleChange}
+                    placeholder="e.g. How to handle JWT expiration in React?"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+                  />
+                  {errors.question && (
+                    <p className="text-red-400 text-xs font-bold ml-1">
+                      {errors.question}
+                    </p>
+                  )}
+                </div>
+
+                {/* Description */}
+                <div className="space-y-3">
+                  <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">
+                    Detailed Description
+                  </label>
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    rows="8"
+                    placeholder="Describe your problem in detail..."
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium resize-none"
+                  />
+                  {errors.description && (
+                    <p className="text-red-400 text-xs font-bold ml-1">
+                      {errors.description}
+                    </p>
+                  )}
+                </div>
+
+                {/* Server Error */}
+                {errors.server && (
+                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-bold text-center">
+                    {errors.server}
+                  </div>
+                )}
+
+                {/* Submit Button */}
+                <div className="pt-4">
+                  <Button
+                    type="submit"
+                    className="w-full h-12 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-xl shadow-blue-600/20 transition-all active:scale-[0.98] leading-none"
+                  >
+                    <span>Publish Question</span>
+                    <span className="text-xl">→</span>
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </main>
+      </div>
     </GlobalLayout>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../../Context/API";
-import { motion } from "framer-motion"; // for animations similar to Dashboard
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import GlobalLayout from "../Layout/GlobalLayout";
 
@@ -11,114 +11,114 @@ const AllQuestionList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch all questions from the backend when the component mounts
     api
-      .get("/questions/allquestions") // Assuming your backend route is "/api/questions"
+      .get("/questions/allquestions")
       .then((response) => {
-        setQuestions(response.data); // Set questions from the response
-        setLoading(false); // Set loading state to false after data is fetched
+        setQuestions(response.data);
+        setLoading(false);
       })
       .catch((err) => {
-        setError("Something went wrong, please try again later!");
+        setError("Unable to load the feed. Check your connection.");
         setLoading(false);
       });
   }, []);
 
   if (loading)
-    return <div className="text-center text-xl py-8">Loading questions...</div>;
-  if (error)
-    return <div className="text-center text-red-500 py-8">{error}</div>;
-
-  // Function to get the first letter of the username
-  const getInitials = (username) => {
-    return username && username.length > 0 ? username[0].toUpperCase() : "";
-  };
-
-  // Handle logout
-  const handleLogout = () => {
-    // Remove the token from localStorage
-    localStorage.removeItem("token");
-
-    // Redirect to sign-in page after logout
-    navigate("/signin");
-  };
+    return (
+      <div className="min-h-screen bg-[#030712] flex items-center justify-center">
+        <div className="animate-spin size-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+      </div>
+    );
 
   return (
     <GlobalLayout>
-      <section className="min-h-screen flex flex-col">
-        <div className=" relative overflow-hidden flex flex-col flex-grow">
-          <header className="bg-gradient py-20 px-6 flex justify-between items-center ">
-            <div className="container mx-auto px-6 text-center">
-              <div className=" absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
-              <motion.h1
-                initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }}
-                className="text-5xl font-heading font-extrabold mb-6 tracking-wide"
-              >
-                Questions to Answer
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 1 }}
-                className="text-lg mb-8 font-medium"
-              >
-                Browse through the questions posted by others and share your
-                knowledge.
-              </motion.p>
+      <div className="min-h-screen bg-[#030712] text-white font-sans">
+        {/* --- Hero Header --- */}
+        <header className="relative py-20 px-6 border-b border-white/5 overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05),transparent)] -z-10"></div>
+
+          <div className="max-w-4xl mx-auto py-4 text-center">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-4"
+            >
+              Community <span className="text-blue-500">Knowledge</span>
+            </motion.h1>
+            <p className="text-slate-400 text-lg font-medium">
+              Explore {questions.length} active discussions from developers
+              worldwide.
+            </p>
+          </div>
+        </header>
+
+        {/* --- Questions Feed --- */}
+        <main className="max-w-4xl mx-auto px-6 py-12">
+          {error ? (
+            <div className="p-8 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-center">
+              {error}
             </div>
-          </header>
-          <section className="flex flex-col overflow-x-hidden">
-            <div className="container mx-auto px-6">
-              <div className="absolute -z-10 inset-0 bg-[radial-gradient(circle_farthest-corner,var(--color-blue-900)_50%,var(--color-indigo-900)_75%,transparent)] [mask-image:radial-gradient(circle_farthest-side,black,transparent)]"></div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {questions.map((question) => (
-                  <div
-                    key={question.question_id}
-                    className="bg-white shadow-lg rounded-3xl p-6 hover:shadow-2xl transition-all transform hover:scale-105"
-                  >
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className="space-y-4"
-                    >
-                      <h3 className="text-2xl font-semibold text-black">
-                        {question.question}
-                      </h3>
-                      <p className="text-black">{question.description}</p>
-                      <div className="flex items-center">
-                        <div className="w-10 h-10 rounded-full bg-blue-800 text-white flex items-center justify-center mr-4">
-                          <span className="text-xl font-bold">
-                            {getInitials(question.username)}
-                          </span>
-                        </div>
-                        <p className="text-black">
-                          Asked by:{" "}
-                          <span className="font-semibold">
-                            {question.username}
-                          </span>
-                        </p>
+          ) : (
+            <div className="space-y-4">
+              {questions.map((question, i) => (
+                <motion.div
+                  key={question.question_id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  onClick={() =>
+                    navigate(
+                      `/answerquestion?questionId=${question.question_id}`
+                    )
+                  }
+                  className="group relative p-6 md:p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:border-blue-500/30 hover:bg-white/[0.04] transition-all cursor-pointer"
+                >
+                  <div className="flex items-start gap-6">
+                    {/* User Avatar / Initials */}
+                    <div className="hidden sm:flex size-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 items-center justify-center text-lg font-bold shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">
+                      {question.username?.[0].toUpperCase()}
+                    </div>
+
+                    <div className="flex-grow">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-400">
+                          {question.username}
+                        </span>
+                        <span className="size-1 bg-slate-700 rounded-full"></span>
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+                          Question ID: #{question.question_id}
+                        </span>
                       </div>
-                      <button
-                        onClick={() =>
-                          navigate(
-                            `/answerquestion?questionId=${question.question_id}`
-                          )
-                        }
-                        className="bg-gradient-to-br from-blue-500 to-blue-900 text-white px-6 py-3 mt-4 rounded-full text-lg font-semibold hover:bg-gradient-to-br hover:from-green-500 hover:to-green-800 transition-all duration-300 ease-in-out flex items-center space-x-2"
-                      >
-                        <span>Answer this question</span>
-                      </button>
-                    </motion.div>
+
+                      <h3 className="text-xl md:text-2xl font-bold mb-3 tracking-tight group-hover:text-blue-400 transition-colors">
+                        {question.title || question.question}
+                      </h3>
+
+                      <p className="text-slate-400 text-sm md:text-base leading-relaxed line-clamp-2 mb-6 font-medium">
+                        {question.description}
+                      </p>
+
+                      <div className="flex items-center gap-4">
+                        <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/5 text-[11px] font-bold uppercase tracking-widest group-hover:bg-blue-500 group-hover:text-white transition-all">
+                          View & Answer
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                ))}
-              </div>
+                </motion.div>
+              ))}
             </div>
-          </section>
-        </div>
-      </section>
+          )}
+
+          {questions.length === 0 && !loading && (
+            <div className="text-center py-20 border-2 border-dashed border-white/5 rounded-[3rem]">
+              <p className="text-slate-500 font-medium italic text-lg text-glow">
+                No questions have been asked yet. Be the first!
+              </p>
+            </div>
+          )}
+        </main>
+      </div>
     </GlobalLayout>
   );
 };

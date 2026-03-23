@@ -36,13 +36,13 @@ export const Header = ({ user }) => {
             </div>
           ) : (
             <>
-              <Link to="/signin" className="hidden sm:block">
+              <Link to="/signin" className="hidden sm:block ">
                 <Button variant="tertiary">Login</Button>
               </Link>
               <Link to="/signup">
                 <Button
                   variant="primary"
-                  className="shadow-lg shadow-blue-600/20"
+                  className="shadow-lg bg-blue-700 hover:text-white hover:bg-black"
                 >
                   Join Free
                 </Button>

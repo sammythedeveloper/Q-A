@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import api from "../../context/API.js";
+// 1. Import icons from Lucide
+import { Eye, EyeOff } from "lucide-react";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +16,11 @@ const SignUp = () => {
   });
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
+
+  // 2. Add two separate states for visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,7 +30,6 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simple validation check
     let vErrors = {};
     if (formData.password !== formData.confirmPassword)
       vErrors.confirmPassword = "Passwords match failed";
@@ -44,11 +50,10 @@ const SignUp = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 md:p-10 font-sans">
       <div className="w-full max-w-6xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[800px] border border-slate-200">
-        {/* Left Sidebar: Brand Section (Matches SignIn) */}
+        {/* Left Sidebar (Keeping your original branding) */}
         <div className="w-full md:w-[40%] bg-[#030712] p-12 md:p-20 flex flex-col justify-center text-white relative overflow-hidden">
           <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px]"></div>
           <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px]"></div>
-
           <div className="relative z-10 flex flex-col gap-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 w-fit mb-4">
               <span className="relative flex h-2 w-2">
@@ -60,29 +65,19 @@ const SignUp = () => {
               </span>
             </div>
             <Link to="/" className="group flex flex-col items-start">
-              {/* The Text */}
               <h1 className="text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400 transition-all duration-500 group-hover:to-blue-400">
                 Stacky
               </h1>
-
-              {/* The Dynamic Line */}
               <div className="w-12 h-1.5 bg-blue-600 rounded-full mt-2 transition-all duration-500 ease-in-out group-hover:w-32 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.6)]"></div>
             </Link>
-
             <p className="text-lg md:text-xl text-slate-400 leading-relaxed font-medium max-w-sm">
               Create an account to ask questions, share knowledge, and{" "}
               <span className="text-white">grow your dev career.</span>
             </p>
-
-            <div className="mt-12 flex items-center gap-4 text-slate-500 text-sm border-t border-slate-800/50 pt-8">
-              <p className="font-medium tracking-tight italic">
-                "The best place for junior devs to learn."
-              </p>
-            </div>
           </div>
         </div>
 
-        {/* Right Section: Expanded Form area */}
+        {/* Right Section: Form area */}
         <div className="w-full md:w-[60%] p-8 md:p-16 lg:p-24 flex flex-col justify-center bg-white">
           <div className="max-w-2xl w-full mx-auto">
             <h2 className="text-3xl font-bold text-slate-900 mb-2">
@@ -99,7 +94,7 @@ const SignUp = () => {
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Grid for First/Last Name */}
+              {/* Name Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-slate-700">
@@ -109,7 +104,7 @@ const SignUp = () => {
                     type="text"
                     name="firstname"
                     placeholder="John"
-                    className="input-style"
+                    className="input-style w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-100 outline-none"
                     onChange={handleChange}
                   />
                 </div>
@@ -121,7 +116,7 @@ const SignUp = () => {
                     type="text"
                     name="lastname"
                     placeholder="Doe"
-                    className="input-style"
+                    className="input-style w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-100 outline-none"
                     onChange={handleChange}
                   />
                 </div>
@@ -135,7 +130,7 @@ const SignUp = () => {
                   type="text"
                   name="username"
                   placeholder="your username"
-                  className="input-style"
+                  className="input-style w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-100 outline-none"
                   onChange={handleChange}
                 />
               </div>
@@ -148,36 +143,68 @@ const SignUp = () => {
                   type="email"
                   name="email"
                   placeholder="name@company.com"
-                  className="input-style"
+                  className="input-style w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-100 outline-none"
                   onChange={handleChange}
                 />
               </div>
 
-              {/* Grid for Password */}
+              {/* Password Grid with Eye Toggles */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Password Field */}
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-slate-700">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="••••••••"
-                    className="input-style"
-                    onChange={handleChange}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      placeholder="••••••••"
+                      className="input-style w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-100 outline-none pr-12"
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-500 transition-colors"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
                 </div>
+
+                {/* Confirm Password Field */}
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-slate-700">
                     Confirm Password
                   </label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="••••••••"
-                    className="input-style"
-                    onChange={handleChange}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      placeholder="••••••••"
+                      className="input-style w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-100 outline-none pr-12"
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-500 transition-colors"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
+                  </div>
+                  {errors.confirmPassword && (
+                    <p className="text-red-500 text-[10px] mt-1 font-medium">
+                      {errors.confirmPassword}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -195,22 +222,10 @@ const SignUp = () => {
 
               <button
                 type="submit"
-                className="w-full bg-blue-400  hover:bg-blue-600 text-white py-4 rounded-xl font-bold transition-all shadow-xl active:scale-[0.98] mt-4"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold transition-all shadow-xl active:scale-[0.98] mt-4"
               >
                 Create Account
               </button>
-
-              <p className="text-[11px] text-slate-400 text-center mt-6">
-                By clicking "Create Account", you agree to our{" "}
-                <span className="text-blue-500 underline cursor-pointer">
-                  Terms of Service
-                </span>{" "}
-                and{" "}
-                <span className="text-blue-500 underline cursor-pointer">
-                  Privacy Policy
-                </span>
-                .
-              </p>
             </form>
           </div>
         </div>

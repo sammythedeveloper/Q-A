@@ -5,8 +5,8 @@ import { Eye, EyeOff } from "lucide-react";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(false); // State for the checkbox
   const [errors, setErrors] = useState({});
-  // 2. Add the visibility state
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -17,7 +17,12 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/users/login", formData);
+      // Sending email, password, AND the remember flag to your Express backend
+      const response = await api.post("/users/login", {
+        ...formData,
+        remember: rememberMe,
+      });
+
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("username", response.data.username);
@@ -29,12 +34,14 @@ const SignIn = () => {
   };
 
   return (
+    // Outer Shell: Switched to the "Deep Space" dark background
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-sans">
-      <div className="w-full max-w-6xl bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[700px] border border-slate-200">
-        {/* Left Sidebar (No changes here, kept your cool branding) */}
+      <div className="w-full max-w-6xl bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[700px] border border-slate-200 relative z-10">
+        {/* Left Sidebar: Brand Section */}
         <div className="w-full md:w-[40%] bg-[#030712] p-12 md:p-20 flex flex-col justify-center text-white relative overflow-hidden">
           <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px]"></div>
           <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+
           <div className="relative z-10 flex flex-col gap-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 w-fit mb-4">
               <span className="relative flex h-2 w-2">
@@ -45,12 +52,14 @@ const SignIn = () => {
                 Community Live
               </span>
             </div>
+
             <Link to="/" className="group flex flex-col items-start w-fit">
               <h1 className="text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400 transition-all duration-500 group-hover:to-blue-400">
                 Stacky
               </h1>
               <div className="w-12 h-1.5 bg-blue-600 rounded-full mt-2 transition-all duration-500 ease-in-out group-hover:w-32 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.6)]"></div>
             </Link>
+
             <p className="text-lg text-slate-400 leading-relaxed font-medium max-w-sm">
               Expert insights and{" "}
               <span className="text-white font-semibold">
@@ -62,7 +71,7 @@ const SignIn = () => {
         </div>
 
         {/* Right Section: Form area */}
-        <div className="w-full md:w-[60%] p-12 md:p-24 flex flex-col justify-center bg-white">
+        <div className="w-full md:w-[60%] p-12 md:p-24 flex flex-col justify-center bg-slate-50/50">
           <div className="max-w-md w-full mx-auto">
             <h2 className="text-3xl font-bold text-slate-900 mb-2">
               Login to your account
@@ -81,41 +90,41 @@ const SignIn = () => {
               {/* Email Field */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Email
+                  Email Address
                 </label>
                 <input
                   type="email"
                   name="email"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-all outline-none"
-                  placeholder="Enter your email"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-all outline-none"
+                  placeholder="name@company.com"
                   onChange={handleChange}
                   required
                 />
               </div>
 
-              {/* Password Field with Eye Toggle */}
+              {/* Password Field */}
               <div>
                 <div className="flex justify-between mb-2">
                   <label className="text-sm font-semibold text-slate-700">
                     Password
                   </label>
-                  <a
-                    href="#"
+                  <Link
+                    to="/forgot-password"
+                    size={18}
                     className="text-sm text-slate-400 hover:text-blue-600 transition-colors"
                   >
                     Forgot Password?
-                  </a>
+                  </Link>
                 </div>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-all outline-none pr-12"
-                    placeholder="Enter your password"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-all outline-none pr-12"
+                    placeholder="••••••••"
                     onChange={handleChange}
                     required
                   />
-                  {/* Eye Button */}
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -126,28 +135,34 @@ const SignIn = () => {
                 </div>
               </div>
 
+              {/* Remember Me Checkbox */}
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="remember"
-                  className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                 />
-                <label htmlFor="remember" className="text-sm text-slate-400">
-                  Remember me
+                <label
+                  htmlFor="remember"
+                  className="text-sm text-slate-500 cursor-pointer select-none"
+                >
+                  Keep me logged in for 24 hours
                 </label>
               </div>
 
               {errors.general && (
-                <p className="text-red-500 text-sm font-medium">
+                <p className="text-red-500 text-sm font-medium animate-pulse">
                   {errors.general}
                 </p>
               )}
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-lg font-bold transition-all shadow-lg active:scale-[0.98]"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold transition-all shadow-lg shadow-blue-600/20 active:scale-[0.98] mt-2"
               >
-                Login
+                Sign In
               </button>
             </form>
           </div>

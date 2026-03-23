@@ -59,11 +59,15 @@ const SignUp = () => {
                 Join the Alpha
               </span>
             </div>
+            <Link to="/" className="group flex flex-col items-start">
+              {/* The Text */}
+              <h1 className="text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400 transition-all duration-500 group-hover:to-blue-400">
+                Stacky
+              </h1>
 
-            <h1 className="text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
-              Stacky
-            </h1>
-            <div className="w-12 h-1.5 bg-blue-600 rounded-full"></div>
+              {/* The Dynamic Line */}
+              <div className="w-12 h-1.5 bg-blue-600 rounded-full mt-2 transition-all duration-500 ease-in-out group-hover:w-32 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.6)]"></div>
+            </Link>
 
             <p className="text-lg md:text-xl text-slate-400 leading-relaxed font-medium max-w-sm">
               Create an account to ask questions, share knowledge, and{" "}
@@ -214,7 +218,5 @@ const SignUp = () => {
     </div>
   );
 };
-
-
 
 export default SignUp;

@@ -7,41 +7,54 @@ import { Companies, TechStack } from "./Companies";
 import Footer from "../Layout/Footer";
 
 export const navItems = [
-  { name: "Features", href: "#feature" },
-  { name: "About", href: "#About" },
-  { name: "Community", href: "#community" },
+  { name: "Features", href: "/features" }, // Change from #feature
+  { name: "About", href: "/about" },
+  { name: "Community", href: "/community" },
 ];
 
 export const Landing = () => {
   return (
     <div className="bg-[#030712] text-white min-h-screen font-sans selection:bg-blue-500/30">
       {/* --- MODERN HEADER --- */}
-      <header className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#030712]/80 backdrop-blur-md">
+      <header className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#030712]/90 backdrop-blur-md">
         <div className="max-w-7xl mx-auto h-20 px-6 flex justify-between items-center">
-          <div className="flex gap-4 items-center">
-            <h1 className="text-2xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-500">
+          {/* Logo */}
+          <Link to="/" className="flex items-center group">
+            <h1 className="text-2xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-500 group-hover:from-blue-400 group-hover:to-white transition-all duration-500">
               Stacky
             </h1>
-          </div>
+          </Link>
 
-          <nav className="hidden lg:flex gap-8">
+          {/* Center Nav */}
+          <nav className="hidden lg:flex items-center gap-8">
             {navItems.map(({ name, href }) => (
               <a
                 key={name}
                 href={href}
-                className="text-xs uppercase tracking-widest font-bold text-slate-400 hover:text-blue-400 transition-colors"
+                className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 hover:text-white transition-colors"
               >
                 {name}
               </a>
             ))}
+
+            {/* Visual Divider */}
+            <div className="h-4 w-[1px] bg-white/10 mx-2"></div>
+
+            {/* Modern Login Link */}
+            <Link
+              to="/signin"
+              className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 hover:text-blue-400 transition-colors"
+            >
+              Login
+            </Link>
           </nav>
 
-          <div className="flex gap-4">
-            <Link to="/signin" className="hidden sm:block">
-              <Button variant="tertiary">Login</Button>
-            </Link>
+          {/* Primary Action */}
+          <div className="flex items-center gap-4">
             <Link to="/signup">
-              <Button variant="primary">Launch</Button>
+              <Button className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-xl text-[10px] uppercase tracking-widest font-bold shadow-lg shadow-blue-600/20 transition-all active:scale-95">
+                Launch
+              </Button>
             </Link>
           </div>
         </div>

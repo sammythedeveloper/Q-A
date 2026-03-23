@@ -6,7 +6,7 @@
 // import PrivateRoute from "./component/pages/Layout/PrivateRoute.jsx";
 // import AskPrivateRoute from "./component/pages/Layout/AskPrivateroute.jsx";
 // import AskQuestion from "./component/pages/Question/AskQuestion.jsx";
-// import AllQuestionList from "./component/pages/Question/AllQuestionList.jsx"; 
+// import AllQuestionList from "./component/pages/Question/AllQuestionList.jsx";
 // import AnswerForm from "./component/pages/Answer/Answer.jsx";
 
 // function App() {
@@ -58,8 +58,6 @@
 
 // export default App;
 
-
-
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LandingPage from "./component/pages/Home/Landing.jsx";
 import SignUp from "./component/pages/Sign/SignUp.jsx";
@@ -68,14 +66,22 @@ import Dashboard from "./component/pages/Home/Dashboard.jsx";
 import PrivateRoute from "./component/pages/Layout/PrivateRoute.jsx";
 import AskPrivateRoute from "./component/pages/Layout/AskPrivateroute.jsx";
 import AskQuestion from "./component/pages/Question/AskQuestion.jsx";
-import AllQuestionList from "./component/pages/Question/AllQuestionList.jsx"; 
+import AllQuestionList from "./component/pages/Question/AllQuestionList.jsx";
 import AnswerForm from "./component/pages/Answer/Answer.jsx";
+import FeaturesPage from "./component/pages/Home/Features.jsx";
+import About from "./component/pages/Layout/About.jsx";
+import CommunityPage from "./component/pages/Home/Community.jsx";
 
 function App() {
   return (
-    <Router basename="/Q-A"> {/* Add basename here */}
+    <Router basename="/">
+      {" "}
+      {/* Add basename here */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/features" element={<FeaturesPage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/community" element={<CommunityPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         {/* Protected routes */}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../../Context/API";
+import { Button } from "../Home/Button";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -51,13 +52,15 @@ const SignIn = () => {
               </span>
             </div>
 
-            {/* Brand Name - Using Sans for a premium feel */}
-            <h1 className="text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
-              Stacky
-            </h1>
+            <Link to="/" className="group flex flex-col items-start w-fit">
+              {/* The Text */}
+              <h1 className="text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400 transition-all duration-500 group-hover:to-blue-400">
+                Stacky
+              </h1>
 
-            {/* Simple Accent Divider */}
-            <div className="w-12 h-1.5 bg-blue-600 rounded-full"></div>
+              {/* The Dynamic Line */}
+              <div className="w-12 h-1.5 bg-blue-600 rounded-full mt-2 transition-all duration-500 ease-in-out group-hover:w-32 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.6)]"></div>
+            </Link>
 
             {/* Body Text - Swapped mono for a clean medium sans */}
             <p className="text-lg md:text-xl text-slate-400 leading-relaxed font-medium max-w-sm">

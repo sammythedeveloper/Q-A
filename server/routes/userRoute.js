@@ -18,9 +18,5 @@ router.post("/login", login);
 //check user
 router.get("/check", authMiddleware, checkUser);
 
-router.post("/test", (req, res) => {
-    console.log("TEST HIT", req.body);
-    res.json({ msg: "server alive" });
-  });
 
 module.exports = router;

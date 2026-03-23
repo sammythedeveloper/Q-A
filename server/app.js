@@ -4,9 +4,7 @@ const cors = require("cors");
 const dbConnection = require("./db/dbConfig");
 
 const app = express();
-const port = process.env.PORT; // NO fallback
-
-
+const port = process.env.PORT || 5000; // NO fallback
 
 /* ===============================
    CORS CONFIG

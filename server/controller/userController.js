@@ -57,7 +57,9 @@ async function register(req, res) {
 // login
 
 async function login(req, res) {
-  const { email, password } = req.body;
+  // 1. Destructure 'remember' from the body
+  const { email, password, remember } = req.body;
+
   if (!email || !password) {
     return res
       .status(StatusCodes.BAD_REQUEST)
@@ -69,15 +71,14 @@ async function login(req, res) {
       "SELECT user_id, username, password FROM users WHERE email = ?",
       [email]
     );
+
     if (user.length == 0) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ msg: "invalid credential" });
     }
 
-    // compare password
     const isMatch = await bcrypt.compare(password, user[0].password);
-
     if (!isMatch) {
       return res
         .status(StatusCodes.BAD_REQUEST)
@@ -87,7 +88,13 @@ async function login(req, res) {
     const username = user[0].username;
     const user_id = user[0].user_id;
 
-    const token = jwt.sign({ username, user_id },  process.env.JWT_SECRET, { expiresIn: "1d" });
+    // 2. Set dynamic expiration
+    // If 'remember' is true, set to 24h, otherwise 1h
+    const expiration = remember ? "24h" : "1h";
+
+    const token = jwt.sign({ username, user_id }, process.env.JWT_SECRET, {
+      expiresIn: expiration,
+    });
 
     return res
       .status(StatusCodes.OK)
@@ -96,14 +103,13 @@ async function login(req, res) {
     console.log(error.message);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ msg: "something went wrong ,try again later!" });
+      .json({ msg: "something went wrong, try again later!" });
   }
 }
 
 async function checkUser(req, res) {
   const username = req.user.username;
-  const user_id = req.user.userid;
-
+  const user_id = req.user.userid; // <--- This would have been undefined!
   res.status(StatusCodes.OK).json({ msg: "valid user", username, user_id });
 }
 

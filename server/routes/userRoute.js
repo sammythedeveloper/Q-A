@@ -15,7 +15,7 @@ router.post("/register", register);
 //login user
 router.post("/login", login);
 
-//check user
+//checking user
 router.get("/check", authMiddleware, checkUser);
 
 

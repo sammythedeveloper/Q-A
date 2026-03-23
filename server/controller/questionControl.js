@@ -86,7 +86,6 @@ async function allquestions(req, res) {
 async function singlequestion(req, res) {
   const { questionId } = req.query;
 
-  // Remove isNaN() because UUIDs are strings, not numbers!
   if (!questionId) {
     return res.status(400).json({ msg: "Question ID is required" });
   }

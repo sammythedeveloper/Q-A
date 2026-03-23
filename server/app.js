@@ -4,15 +4,14 @@ const cors = require("cors");
 const dbConnection = require("./db/dbConfig");
 
 const app = express();
-const port = process.env.PORT || 5000; // NO fallback
+const port = process.env.PORT || 5500; // NO fallback
+const notificationRoutes = require("./routes/notificationRoute");
 
 /* ===============================
    CORS CONFIG
 ================================ */
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://sammythedeveloper.github.io",
-  "https://sammythedeveloper.github.io/Q-A",
 ];
 
 app.use(
@@ -50,6 +49,7 @@ app.get("/api/db-check", async (req, res) => {
    ROUTES
 ================================ */
 app.use("/api/users", require("./routes/userRoute"));
+app.use("/api/notifications", notificationRoutes);
 app.use("/api/questions", require("./routes/questionRoute"));
 app.use("/api/answers", require("./routes/answerRoute"));
 

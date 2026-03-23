@@ -8,7 +8,6 @@ import Footer from "../../components/ui/Footer";
 
 export const navItems = [
   { name: "Features", href: "/features" }, // Change from #feature
-  { name: "About", href: "/about" },
   { name: "Community", href: "/community" },
 ];
 

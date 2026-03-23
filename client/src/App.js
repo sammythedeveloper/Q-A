@@ -19,6 +19,36 @@ import ContentPage from "./pages/Content/ContentPage.jsx";
 import ScrollToTop from "./layouts/ScrollToTop.jsx";
 
 // --- DATA OBJECTS (The "Mission Page Data" I mentioned) ---
+const docsData = {
+  title: "The Protocol",
+  subtitle: "Documentation",
+  icon: Shield,
+  content: `Welcome to the inner circle of Stacky. As an authenticated architect, you have full access to our collaborative ecosystem. 
+
+  This protocol outlines how to interact with our systems, maintain the integrity of the knowledge base, and utilize our API for maximum efficiency.`,
+  features: [
+    {
+      name: "Knowledge Mining",
+      icon: <Zap size={20} />,
+      desc: "Search through verified solutions. Use precise tags to filter by language or framework.",
+    },
+    {
+      name: "Contribution Logic",
+      icon: <Code2 size={20} />,
+      desc: "When asking, provide code snippets and environment details. Quality over quantity.",
+    },
+    {
+      name: "Security & Auth",
+      icon: <Shield size={20} />,
+      desc: "Your session is valid for 24 hours. Tokens are encrypted and tied to your hardware ID.",
+    },
+    {
+      name: "The Database",
+      icon: <Database size={20} />,
+      desc: "All questions are indexed in our PostgreSQL cluster for global high-availability.",
+    },
+  ],
+};
 const missionData = {
   title: "The DNA",
   subtitle: "Engineering Growth",
@@ -87,6 +117,14 @@ function App() {
           element={
             <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/docs"
+          element={
+            <PrivateRoute>
+              <ContentPage {...docsData} />
             </PrivateRoute>
           }
         />

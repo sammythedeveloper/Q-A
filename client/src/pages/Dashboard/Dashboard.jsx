@@ -130,7 +130,7 @@ const Dashboard = () => {
                 Check out our guide on how to write a great question.
               </p>
             </div>
-            <Link >
+            <Link to="/docs">
               <button className="px-6 py-3 bg-white text-black font-bold rounded-xl hover:bg-blue-50 transition-colors">
                 Read Documentation
               </button>

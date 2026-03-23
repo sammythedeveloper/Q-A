@@ -1,11 +1,19 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import {
-  ArrowLeft,
-} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const ContentPage = ({ title, subtitle, content, icon: Icon, features }) => {
+  const navigate = useNavigate();
+
+  // 1. Check Auth Status
+  const isAuthenticated = !!localStorage.getItem("token");
+  const isDocsPage = title === "The Protocol";
+
+  // 2. Determine the "Back" destination
+  const backDestination = isAuthenticated ? "/dashboard" : "/";
+  const backLabel = isAuthenticated ? "Back to Dashboard" : "Back to Terminal";
+
   return (
     <div className="min-h-screen bg-[#030712] text-slate-300 selection:bg-blue-500/30 font-sans overflow-hidden relative">
       {/* Background Ambient Glows */}
@@ -15,7 +23,7 @@ const ContentPage = ({ title, subtitle, content, icon: Icon, features }) => {
       <div className="max-w-4xl mx-auto px-6 py-20 relative z-10">
         {/* Back Button */}
         <Link
-          to="/"
+          to={backDestination}
           className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors mb-12 group"
         >
           <ArrowLeft
@@ -23,7 +31,7 @@ const ContentPage = ({ title, subtitle, content, icon: Icon, features }) => {
             className="group-hover:-translate-x-1 transition-transform"
           />
           <span className="text-xs font-bold uppercase tracking-widest">
-            Back to Terminal
+            {backLabel}
           </span>
         </Link>
 
@@ -77,18 +85,74 @@ const ContentPage = ({ title, subtitle, content, icon: Icon, features }) => {
           </div>
         </motion.div>
 
-        {/* Footer Call to Action */}
-        <div className="text-center py-10">
-          <p className="text-slate-600 text-[10px] uppercase tracking-[0.4em] font-black mb-6">
-            End of Documentation
-          </p>
-          <Link
-            to="/signup"
-            className="inline-block bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-blue-500 hover:text-white transition-all active:scale-95"
+        {/* --- DYNAMIC SECTION: Only shows on the Docs page --- */}
+        {isDocsPage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="mt-20 space-y-12 border-t border-white/5 pt-20"
           >
-            Initialize Account
-          </Link>
-        </div>
+            <section>
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>01.
+                Authentication Lifecycle
+              </h3>
+              <p className="text-slate-400 leading-relaxed">
+                Stacky uses{" "}
+                <span className="text-white font-bold">
+                  JWT (JSON Web Tokens)
+                </span>{" "}
+                for stateless authentication. Your token is stored in{" "}
+                <code className="text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">
+                  localStorage
+                </code>
+                and verified via{" "}
+                <code className="text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">
+                  authMiddleware
+                </code>{" "}
+                on the Express server.
+              </p>
+            </section>
+
+            <section>
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>02.
+                Posting Architecture
+              </h3>
+              <p className="text-slate-400 leading-relaxed">
+                Every contribution is tied to your{" "}
+                <code className="text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">
+                  user_id
+                </code>
+                . We use relational integrity in MySQL to ensure your questions
+                and answers are never orphaned.
+              </p>
+            </section>
+          </motion.div>
+        )}
+
+        {/* Footer Call to Action: Only show if NOT on Docs page (optional logic) */}
+        {!isDocsPage && (
+          <div className="text-center py-20">
+            <p className="text-slate-600 text-[10px] uppercase tracking-[0.4em] font-black mb-6">
+              Experience the Stack
+            </p>
+            <Link
+              to="/signup"
+              className="inline-block bg-white text-black px-10 py-4 rounded-full font-bold hover:bg-blue-600 hover:text-white transition-all active:scale-95"
+            >
+              Initialize Account
+            </Link>
+          </div>
+        )}
+
+        {isDocsPage && (
+          <div className="text-center py-10 opacity-30">
+            <p className="text-slate-600 text-[10px] uppercase tracking-[0.4em] font-black">
+              End of Protocol
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

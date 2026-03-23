@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import GlobalLayout from "../Layout/GlobalLayout";
+import AppLayout from "../../layouts/AppLayout";
 
 const Dashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,7 +23,7 @@ const Dashboard = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <GlobalLayout>
+    <AppLayout>
       <div className="min-h-screen bg-[#030712] text-white font-sans py-10">
         {/* --- Hero / Welcome Section --- */}
         <header className="relative py-20 px-6 overflow-hidden border-b border-white/5">
@@ -136,7 +136,7 @@ const Dashboard = () => {
           </div>
         </main>
       </div>
-    </GlobalLayout>
+    </AppLayout>
   );
 };
 

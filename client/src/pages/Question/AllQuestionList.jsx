@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import api from "../../../Context/API";
+import api from "../../context/API";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import GlobalLayout from "../Layout/GlobalLayout";
+import AppLayout from "../../layouts/AppLayout";
 
 const AllQuestionList = () => {
   const [questions, setQuestions] = useState([]);
@@ -31,7 +31,7 @@ const AllQuestionList = () => {
     );
 
   return (
-    <GlobalLayout>
+    <AppLayout>
       <div className="min-h-screen bg-[#030712] text-white font-sans">
         {/* --- Hero Header --- */}
         <header className="relative py-20 px-6 border-b border-white/5 overflow-hidden">
@@ -119,7 +119,7 @@ const AllQuestionList = () => {
           )}
         </main>
       </div>
-    </GlobalLayout>
+    </AppLayout>
   );
 };
 

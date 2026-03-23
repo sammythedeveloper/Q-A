@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import api from "../../../Context/API";
+import api from "../../context/API.js";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({

@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import GlobalLayout from "../Layout/GlobalLayout";
+import PublicLayout from "../../layouts/PublicLayout";
 
 const features = [
   {
@@ -35,7 +35,7 @@ const features = [
 
 const FeaturesPage = () => {
   return (
-    <GlobalLayout>
+    <PublicLayout>
       <div className="min-h-screen bg-[#030712] text-white pt-32 pb-20">
         <div className="max-w-7xl mx-auto px-6">
           {/* Header */}
@@ -83,7 +83,7 @@ const FeaturesPage = () => {
           </div>
         </div>
       </div>
-    </GlobalLayout>
+    </PublicLayout>
   );
 };
 

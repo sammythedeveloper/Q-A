@@ -1,90 +1,36 @@
-// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// import LandingPage from "./component/pages/Home/Landing.jsx";
-// import SignUp from "./component/pages/Sign/SignUp.jsx";
-// import SignIn from "./component/pages/Sign/SignIn.jsx";
-// import Dashboard from "./component/pages/Home/Dashboard.jsx";
-// import PrivateRoute from "./component/pages/Layout/PrivateRoute.jsx";
-// import AskPrivateRoute from "./component/pages/Layout/AskPrivateroute.jsx";
-// import AskQuestion from "./component/pages/Question/AskQuestion.jsx";
-// import AllQuestionList from "./component/pages/Question/AllQuestionList.jsx";
-// import AnswerForm from "./component/pages/Answer/Answer.jsx";
-
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<LandingPage />} />
-//         <Route path="/signup" element={<SignUp />} />
-//         <Route path="/signin" element={<SignIn />} />
-//         {/* Protected routes */}
-//         <Route
-//           path="/dashboard"
-//           element={
-//             <PrivateRoute>
-//               <Dashboard />
-//             </PrivateRoute>
-//           }
-//         />
-//         <Route
-//           path="/ask-question"
-//           element={
-//             <AskPrivateRoute>
-//               <AskQuestion />
-//             </AskPrivateRoute>
-//           }
-//         />
-//         {/* Route for listing questions */}
-//         <Route
-//           path="/allQuestions"
-//           element={
-//             <PrivateRoute>
-//               <AllQuestionList />
-//             </PrivateRoute>
-//           }
-//         />
-//    {/* Route for Answering a Question */}
-// <Route
-//           path="/answerquestion"
-//           element={
-//             <PrivateRoute>
-//               <AnswerForm/>
-//             </PrivateRoute>
-//           }
-//         />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LandingPage from "./component/pages/Home/Landing.jsx";
-import SignUp from "./component/pages/Sign/SignUp.jsx";
-import SignIn from "./component/pages/Sign/SignIn.jsx";
-import Dashboard from "./component/pages/Home/Dashboard.jsx";
-import PrivateRoute from "./component/pages/Layout/PrivateRoute.jsx";
-import AskPrivateRoute from "./component/pages/Layout/AskPrivateroute.jsx";
-import AskQuestion from "./component/pages/Question/AskQuestion.jsx";
-import AllQuestionList from "./component/pages/Question/AllQuestionList.jsx";
-import AnswerForm from "./component/pages/Answer/Answer.jsx";
-import FeaturesPage from "./component/pages/Home/Features.jsx";
-import About from "./component/pages/Layout/About.jsx";
-import CommunityPage from "./component/pages/Home/Community.jsx";
+
+// Security
+import PrivateRoute from "./routes/PrivateRoute.jsx";
+import AskPrivateRoute from "./routes/AskPrivateroute";
+
+// Pages
+import LandingPage from "./pages/Home/Landing";
+import FeaturesPage from "./pages/Features/Features.jsx";
+import CommunityPage from "./pages/Community/Community";
+import SignUp from "./pages/Auth/SignUp.jsx";
+import SignIn from "./pages/Auth/SignIn.jsx";
+import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import AllQuestionList from "./pages/Question/AllQuestionList.jsx";
+import AskQuestion from "./pages/Question/AskQuestion.jsx";
+import AnswerForm from "./pages/Answer/Answer.jsx";
 
 function App() {
   return (
     <Router basename="/">
-      {" "}
-      {/* Add basename here */}
       <Routes>
+        
+        {/* --- PUBLIC ROUTES --- */}
+        {/* We removed <PublicLayout> here because it's already inside these pages */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/features" element={<FeaturesPage />} />
-        <Route path="/about" element={<About />} />
         <Route path="/community" element={<CommunityPage />} />
+        
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
-        {/* Protected routes */}
+
+        {/* --- PRIVATE ROUTES --- */}
+        {/* We removed <AppLayout> here because it's already inside these pages */}
         <Route
           path="/dashboard"
           element={
@@ -93,15 +39,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route
-          path="/ask-question"
-          element={
-            <AskPrivateRoute>
-              <AskQuestion />
-            </AskPrivateRoute>
-          }
-        />
-        {/* Route for listing questions */}
+        
         <Route
           path="/allQuestions"
           element={
@@ -110,7 +48,16 @@ function App() {
             </PrivateRoute>
           }
         />
-        {/* Route for Answering a Question */}
+
+        <Route
+          path="/ask-question"
+          element={
+            <AskPrivateRoute>
+              <AskQuestion />
+            </AskPrivateRoute>
+          }
+        />
+
         <Route
           path="/answerquestion"
           element={
@@ -119,6 +66,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
       </Routes>
     </Router>
   );

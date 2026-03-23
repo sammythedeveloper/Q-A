@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../../Context/API";
-import { Button } from "../Home/Button";
+import api from "../../context/API";
+import { Button } from "../../components/ui/Button";
 import { motion } from "framer-motion";
-import GlobalLayout from "../Layout/GlobalLayout";
+import AppLayout from "../../layouts/AppLayout";
 
 const AskQuestion = () => {
   const [formData, setFormData] = useState({ question: "", description: "" });
@@ -50,7 +50,7 @@ const AskQuestion = () => {
   };
 
   return (
-    <GlobalLayout>
+    <AppLayout>
       <div className="min-h-screen bg-[#030712] text-white font-sans pt-20">
         <main className="max-w-6xl mx-auto px-6 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -166,7 +166,7 @@ const AskQuestion = () => {
           </div>
         </main>
       </div>
-    </GlobalLayout>
+    </AppLayout>
   );
 };
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import api from "../../../Context/API";
+import api from "../../context/API";
 import { useLocation } from "react-router-dom";
-import GlobalLayout from "../Layout/GlobalLayout";
+import AppLayout from "../../layouts/AppLayout";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "../Home/Button";
+import { Button } from "../../components/ui/Button";
 
 const AnswerForm = () => {
   const location = useLocation();
@@ -62,7 +62,7 @@ const AnswerForm = () => {
   };
 
   return (
-    <GlobalLayout>
+    <AppLayout>
       <div className="min-h-screen bg-[#030712] text-white font-sans pt-24 pb-20">
         <main className="max-w-4xl mx-auto px-6">
           {/* --- Question Section --- */}
@@ -199,7 +199,7 @@ const AnswerForm = () => {
           </section>
         </main>
       </div>
-    </GlobalLayout>
+    </AppLayout>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../../../Context/API";
-import { Button } from "../Home/Button";
+import api from "../../context/API.js";
+import { Button } from "../../components/ui/Button";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });

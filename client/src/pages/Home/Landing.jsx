@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Orbit } from "./Orbit";
-import { Button } from "./Button";
-import { Companies, TechStack } from "./Companies";
-import Footer from "../Layout/Footer";
+import { Orbit } from "../../components/ui/Orbit";
+import { Button } from "../../components/ui/Button";
+import { Companies, TechStack } from "../../layouts/Companies";
+import Footer from "../../components/ui/Footer";
 
 export const navItems = [
   { name: "Features", href: "/features" }, // Change from #feature

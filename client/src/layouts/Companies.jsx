@@ -1,16 +1,16 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ReactComponent as ReactLogo } from "../../asset/react.svg";
-import { ReactComponent as Javascript } from "../../asset/JavaScript.svg";
-import { ReactComponent as Typescript } from "../../asset/TypeScript.svg";
-import { ReactComponent as MongoDB } from "../../asset/MongoDB.svg"; // Renamed from Mango
-import { ReactComponent as Node } from "../../asset/Node.js.svg";
-import { ReactComponent as Mysql } from "../../asset/MySQL.svg";
-import { ReactComponent as Tailwind } from "../../asset/Tailwind CSS.svg";
-import { ReactComponent as HTML } from "../../asset/HTML5.svg";
-import { ReactComponent as CSS } from "../../asset/CSS3.svg";
+import { ReactComponent as ReactLogo } from "../asset/react.svg";
+import { ReactComponent as Javascript } from "../asset/JavaScript.svg";
+import { ReactComponent as Typescript } from "../asset/TypeScript.svg";
+import { ReactComponent as MongoDB } from "../asset/MongoDB.svg"; // Renamed from Mango
+import { ReactComponent as Node } from "../asset/Node.js.svg";
+import { ReactComponent as Mysql } from "../asset/MySQL.svg";
+import { ReactComponent as Tailwind } from "../asset/Tailwind CSS.svg";
+import { ReactComponent as HTML } from "../asset/HTML5.svg";
+import { ReactComponent as CSS } from "../asset/CSS3.svg";
 
-import { Button } from "./Button";
+import { Button } from "../components/ui/Button";
 
 export const techStack = [
   { name: "HTML", logo: HTML },

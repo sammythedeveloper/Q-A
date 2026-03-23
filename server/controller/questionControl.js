@@ -62,55 +62,52 @@ async function askquestion(req, res) {
 
 async function allquestions(req, res) {
   try {
-    // here i Query to get all questions with the username of the user who posted them
     const [questions] = await dbConnection.query(
-      `SELECT questions.question_id, questions.user_id, questions.question, questions.description, users.username
-       FROM questions 
-       JOIN users ON questions.user_id = users.user_id`
+      `SELECT 
+        q.question_id, 
+        q.user_id, 
+        q.question, 
+        q.description, 
+        u.username,
+        GROUP_CONCAT(t.tag_name) AS tags -- This grabs all tags for the question
+       FROM questions q
+       JOIN users u ON q.user_id = u.user_id
+       LEFT JOIN question_tags qt ON q.question_id = qt.question_id
+       LEFT JOIN tags t ON qt.tag_id = t.tag_id
+       GROUP BY q.question_id`
     );
 
-    if (questions.length > 0) {
-      return res.status(200).json(questions); // Return all questions with the associated username
-    } else {
-      return res.status(404).json({ msg: "No questions found" });
-    }
+    return res.status(200).json(questions);
   } catch (error) {
-    console.log(error.message);
-    return res
-      .status(500)
-      .json({ msg: "Something went wrong, please try again later!" });
+    return res.status(500).json({ msg: "Database error" });
   }
 }
 
 async function singlequestion(req, res) {
-  const { questionId } = req.query; // by this i Get 'questionId' from query parameters
+  const { questionId } = req.query;
 
-  // here i can validate that 'question_id' is provided and is a valid number
-  if (!questionId || isNaN(questionId)) {
-    return res.status(400).json({ msg: "Invalid question_id provided" });
+  // Remove isNaN() because UUIDs are strings, not numbers!
+  if (!questionId) {
+    return res.status(400).json({ msg: "Question ID is required" });
   }
 
   try {
-    // here i can Query to fetch a single question based on 'question_id'
     const [question] = await dbConnection.query(
-      `SELECT question_id, user_id, question, description 
-       FROM questions 
-       WHERE question_id = ?`,
+      `SELECT q.question_id, q.user_id, q.question, q.description, u.username
+       FROM questions q
+       JOIN users u ON q.user_id = u.user_id
+       WHERE q.question_id = ?`,
       [questionId]
     );
 
-    // here i can Check if the question was found
-    if (!question || question.length === 0) {
+    if (question.length === 0) {
       return res.status(404).json({ msg: "Question not found" });
     }
 
-    // Return the single question
     return res.status(200).json({ SingleQuestion: question });
   } catch (error) {
-    console.log(error.message);
-    return res
-      .status(500)
-      .json({ msg: "Something went wrong, please try again later!" });
+    console.error("🔥 Error fetching single question:", error.message);
+    return res.status(500).json({ msg: "Something went wrong" });
   }
 }
 

@@ -17,47 +17,79 @@ const AnswerForm = () => {
   const queryParams = new URLSearchParams(location.search);
   const questionId = queryParams.get("questionId");
 
-  const fetchData = async () => {
+  // fetchData now accepts 'isInitial' to prevent flickering on post
+  const fetchData = async (isInitial = false) => {
     try {
-      const qRes = await api.get(
-        `/questions/singlequestion?questionId=${questionId}`
-      );
-      setQuestion(qRes.data.SingleQuestion[0]);
+      if (isInitial) setLoading(true);
 
-      const aRes = await api.get(`/answers/allanswers/${questionId}`);
-      setAnswers(aRes.data);
+      // Get the token from local storage
+      const token = localStorage.getItem("token");
+
+      const qRes = await api.get(
+        `/questions/singlequestion?questionId=${questionId}`,
+        { headers: { Authorization: `Bearer ${token}` } } // Add this
+      );
+
+      if (qRes.data?.SingleQuestion?.length > 0) {
+        setQuestion(qRes.data.SingleQuestion[0]);
+      }
+
+      try {
+        const aRes = await api.get(
+          `/answers/allanswers/${questionId}`,
+          { headers: { Authorization: `Bearer ${token}` } } // Add this
+        );
+        setAnswers(aRes.data || []);
+      } catch (answerErr) {
+        setAnswers([]);
+      }
+
       setLoading(false);
     } catch (error) {
-      setErrorMessage("Failed to load discussion.");
+      setErrorMessage("Critical error: Could not find this question.");
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (questionId) fetchData();
+    if (questionId) fetchData(true);
   }, [questionId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userId = localStorage.getItem("user_id");
+    setErrorMessage(""); // Clear previous errors
+
+    const token = localStorage.getItem("token");
 
     if (!answer.trim()) return setErrorMessage("Please type an answer first.");
 
     try {
-      const response = await api.post("answers/answerquestion", {
-        user_id: userId,
-        question_id: questionId,
-        answer,
-      });
+      const response = await api.post(
+        "answers/answerquestion",
+        {
+          question_id: questionId,
+          answer: answer,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.status === 201) {
         setSuccessMessage("Answer shared!");
         setAnswer("");
-        fetchData(); // Refresh feed immediately
+        // Refresh data WITHOUT the 'loading' spinner for an instant feel
+        await fetchData(false);
         setTimeout(() => setSuccessMessage(""), 3000);
       }
     } catch (error) {
-      setErrorMessage("Something went wrong.");
+      if (error.response?.status === 401) {
+        setErrorMessage("Please log in again to post an answer.");
+      } else {
+        setErrorMessage(error.response?.data?.msg || "Something went wrong.");
+      }
     }
   };
 
@@ -79,7 +111,7 @@ const AnswerForm = () => {
               <>
                 <div className="flex items-center gap-3 mb-6">
                   <div className="size-10 rounded-xl bg-blue-600 flex items-center justify-center font-bold">
-                    {question.username?.[0].toUpperCase()}
+                    {question.username?.[0].toUpperCase() || "D"}
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-blue-400 leading-none">
@@ -152,50 +184,27 @@ const AnswerForm = () => {
             </form>
           </section>
 
-          {/* --- Answers Feed --- */}
           <section className="space-y-6">
-            <div className="flex items-center justify-between mb-8 border-b border-white/5 pb-4">
-              <h3 className="text-xl font-bold tracking-tight">
-                Community Answers
-              </h3>
-              <span className="bg-white/5 px-3 py-1 rounded-full text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                {answers.length} Total
-              </span>
-            </div>
-
-            {loading ? (
-              <div className="py-20 text-center text-slate-500 italic">
-                Curating discussion...
-              </div>
-            ) : answers.length > 0 ? (
-              answers.map((ans, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all"
-                >
-                  <div className="flex items-center gap-4 mb-4">
+            {answers.map((ans, i) => (
+              <motion.div
+                key={ans.answer_id || i}
+                className="p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-4">
                     <div className="size-10 rounded-xl bg-slate-800 flex items-center justify-center text-sm font-bold text-slate-300">
-                      {ans.username?.[0].toUpperCase()}
+                      {ans.username?.[0].toUpperCase() || "U"}
                     </div>
                     <p className="text-sm font-bold text-slate-200">
                       {ans.username}
                     </p>
                   </div>
-                  <p className="text-slate-400 text-base leading-relaxed font-medium">
-                    {ans.answer}
-                  </p>
-                </motion.div>
-              ))
-            ) : (
-              <div className="py-20 text-center border-2 border-dashed border-white/5 rounded-[2.5rem]">
-                <p className="text-slate-500 font-medium">
-                  No answers yet. Be the first to help!
+                </div>
+                <p className="text-slate-400 text-base leading-relaxed font-medium">
+                  {ans.answer}
                 </p>
-              </div>
-            )}
+              </motion.div>
+            ))}
           </section>
         </main>
       </div>

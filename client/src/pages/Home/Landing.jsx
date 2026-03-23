@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Orbit } from "../../components/ui/Orbit";
 import { Button } from "../../components/ui/Button";
@@ -12,6 +12,7 @@ export const navItems = [
 ];
 
 export const Landing = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-[#030712] text-white min-h-screen font-sans selection:bg-blue-500/30">
       {/* --- MODERN HEADER --- */}
@@ -49,12 +50,22 @@ export const Landing = () => {
           </nav>
 
           {/* Primary Action */}
-          <div className="flex items-center gap-4">
-            <Link to="/signup">
-              <Button className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-xl text-[10px] uppercase tracking-widest font-bold shadow-lg shadow-blue-600/20 transition-all active:scale-95">
-                Launch
-              </Button>
-            </Link>
+          <div className="flex items-center">
+            {/* 1. MOBILE ONLY: Shows "Login" on screens smaller than 768px */}
+            <button
+              onClick={() => navigate("/signin")}
+              className="md:hidden px-6 py-2 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-all"
+            >
+              Login
+            </button>
+
+            {/* 2. DESKTOP ONLY: Shows "Launch" on screens 768px and larger */}
+            <button
+              onClick={() => navigate("/signup")}
+              className="hidden md:block px-6 py-2 bg-white text-black font-bold rounded-xl hover:bg-blue-50 transition-all border border-white/10 shadow-lg shadow-blue-500/10"
+            >
+              Launch
+            </button>
           </div>
         </div>
       </header>

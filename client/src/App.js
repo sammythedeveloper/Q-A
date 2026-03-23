@@ -45,7 +45,7 @@ const docsData = {
     {
       name: "The Database",
       icon: <Database size={20} />,
-      desc: "All questions are indexed in our PostgreSQL cluster for global high-availability.",
+      desc: "All questions are indexed in our MySQL cluster for global high-availability.",
     },
   ],
 };
@@ -137,7 +137,7 @@ function App() {
           }
         />
         <Route
-          path="/ask-question"
+          path="/askquestion"
           element={
             <AskPrivateRoute>
               <AskQuestion />

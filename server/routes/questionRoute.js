@@ -1,18 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-//question controllers
-const { askquestion , allquestions ,singlequestion }=require('../controller/questionControl')
+// 1. i just Imported the Auth Middleware
+const authMiddleware = require('../middleware/authMiddleware'); 
+const { askquestion, allquestions, singlequestion } = require('../controller/questionControl');
 
-//question router
-
-router.post("/askquestion",askquestion)
-
-router.get("/allquestions",allquestions );
-
-router.get("/singlequestion",singlequestion );
-
-
-
+router.post("/askquestion", authMiddleware, askquestion);
+router.get("/allquestions", allquestions); 
+router.get("/singlequestion", singlequestion);
 
 module.exports = router;

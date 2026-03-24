@@ -1,22 +1,21 @@
 const mysql = require("mysql2");
-const { URL } = require("url");
+require("dotenv").config();
 
-if (!process.env.MYSQL_URL) {
-  throw new Error("MYSQL_URL is not defined");
-}
-
-const dbUrl = new URL(process.env.MYSQL_URL);
-
+// Create the connection pool using your Aiven .env variables
 const dbConnection = mysql
   .createPool({
-    host: dbUrl.hostname,
-    user: dbUrl.username,
-    password: dbUrl.password,
-    database: dbUrl.pathname.slice(1), // remove leading slash
-    port: dbUrl.port,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
+    // This is the "Must-Have" for Aiven
+    ssl: {
+      rejectUnauthorized: false,
+    },
     waitForConnections: true,
     connectionLimit: 10,
-    ssl: { rejectUnauthorized: false }, // Required for Railway Private Network
+    queueLimit: 0,
   })
   .promise();
 

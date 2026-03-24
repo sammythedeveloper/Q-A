@@ -1,84 +1,117 @@
-// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// import LandingPage from "./component/pages/Home/Landing.jsx";
-// import SignUp from "./component/pages/Sign/SignUp.jsx";
-// import SignIn from "./component/pages/Sign/SignIn.jsx";
-// import Dashboard from "./component/pages/Home/Dashboard.jsx";
-// import PrivateRoute from "./component/pages/Layout/PrivateRoute.jsx";
-// import AskPrivateRoute from "./component/pages/Layout/AskPrivateroute.jsx";
-// import AskQuestion from "./component/pages/Question/AskQuestion.jsx";
-// import AllQuestionList from "./component/pages/Question/AllQuestionList.jsx"; 
-// import AnswerForm from "./component/pages/Answer/Answer.jsx";
-
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<LandingPage />} />
-//         <Route path="/signup" element={<SignUp />} />
-//         <Route path="/signin" element={<SignIn />} />
-//         {/* Protected routes */}
-//         <Route
-//           path="/dashboard"
-//           element={
-//             <PrivateRoute>
-//               <Dashboard />
-//             </PrivateRoute>
-//           }
-//         />
-//         <Route
-//           path="/ask-question"
-//           element={
-//             <AskPrivateRoute>
-//               <AskQuestion />
-//             </AskPrivateRoute>
-//           }
-//         />
-//         {/* Route for listing questions */}
-//         <Route
-//           path="/allQuestions"
-//           element={
-//             <PrivateRoute>
-//               <AllQuestionList />
-//             </PrivateRoute>
-//           }
-//         />
-//    {/* Route for Answering a Question */}
-// <Route
-//           path="/answerquestion"
-//           element={
-//             <PrivateRoute>
-//               <AnswerForm/>
-//             </PrivateRoute>
-//           }
-//         />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
-
-
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LandingPage from "./component/pages/Home/Landing.jsx";
-import SignUp from "./component/pages/Sign/SignUp.jsx";
-import SignIn from "./component/pages/Sign/SignIn.jsx";
-import Dashboard from "./component/pages/Home/Dashboard.jsx";
-import PrivateRoute from "./component/pages/Layout/PrivateRoute.jsx";
-import AskPrivateRoute from "./component/pages/Layout/AskPrivateroute.jsx";
-import AskQuestion from "./component/pages/Question/AskQuestion.jsx";
-import AllQuestionList from "./component/pages/Question/AllQuestionList.jsx"; 
-import AnswerForm from "./component/pages/Answer/Answer.jsx";
+// 1. Import the icons needed for the mission/stack data
+import { Globe, Code2, Shield, Zap, Database, Cpu } from "lucide-react";
+
+// Security
+import PrivateRoute from "./routes/PrivateRoute.jsx";
+import AskPrivateRoute from "./routes/AskPrivateroute";
+
+// Pages
+import LandingPage from "./pages/Home/Landing";
+import SignUp from "./pages/Auth/SignUp.jsx";
+import SignIn from "./pages/Auth/SignIn.jsx";
+import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import AllQuestionList from "./pages/Question/AllQuestionList.jsx";
+import AskQuestion from "./pages/Question/AskQuestion.jsx";
+import AnswerForm from "./pages/Answer/Answer.jsx";
+// 2. Import the new ContentPage component
+import ContentPage from "./pages/Content/ContentPage.jsx";
+import ScrollToTop from "./layouts/ScrollToTop.jsx";
+
+// --- DATA OBJECTS (The "Mission Page Data" I mentioned) ---
+const docsData = {
+  title: "The Protocol",
+  subtitle: "Documentation",
+  icon: Shield,
+  content: `Welcome to the inner circle of Stacky. As an authenticated architect, you have full access to our collaborative ecosystem. 
+
+  This protocol outlines how to interact with our systems, maintain the integrity of the knowledge base, and utilize our API for maximum efficiency.`,
+  features: [
+    {
+      name: "Knowledge Mining",
+      icon: <Zap size={20} />,
+      desc: "Search through verified solutions. Use precise tags to filter by language or framework.",
+    },
+    {
+      name: "Contribution Logic",
+      icon: <Code2 size={20} />,
+      desc: "When asking, provide code snippets and environment details. Quality over quantity.",
+    },
+    {
+      name: "Security & Auth",
+      icon: <Shield size={20} />,
+      desc: "Your session is valid for 24 hours. Tokens are encrypted and tied to your hardware ID.",
+    },
+    {
+      name: "The Database",
+      icon: <Database size={20} />,
+      desc: "All questions are indexed in our MySQL cluster for global high-availability.",
+    },
+  ],
+};
+const missionData = {
+  title: "The DNA",
+  subtitle: "Engineering Growth",
+  icon: Globe,
+  content: `In an era of AI-generated code, the "Why" matters more than the "What." 
+
+  Stacky was engineered to bridge the gap between junior curiosity and senior expertise. We aren't just building a forum; we're building a high-fidelity knowledge exchange for the next generation of Full-Stack Architects. 
+
+  Our mission is to turn every "bug" into a Masterclass.`,
+  features: [
+    {
+      name: "Architectural Integrity",
+      icon: <Shield size={20} />,
+      desc: "We prioritize deep-dive explanations over quick-fix snippets.",
+    },
+    {
+      name: "Community-Driven Logic",
+      icon: <Zap size={20} />,
+      desc: "Built by a developer, for developers, with a focus on real-world scalability.",
+    },
+  ],
+};
+
+const stackData = {
+  title: "The Toolbox",
+  subtitle: "Our Stack",
+  icon: Code2,
+  content: `Stacky isn't just a website; it's a showcase of modern engineering. We've hand-picked a tech stack that balances raw performance with developer experience.`,
+  features: [
+    {
+      name: "Frontend Architecture",
+      icon: <Code2 size={20} />,
+      desc: "React 18+, Framer Motion for fluidity, and Tailwind CSS for precision styling.",
+    },
+    {
+      name: "Backend Protocol",
+      icon: <Cpu size={20} />,
+      desc: "Node Js and Express handles the heavy lifting and JWT for Authentication",
+    },
+    {
+      name: "Persistent Layer",
+      icon: <Database size={20} />,
+      desc: "MySQL for relational data integrity and blazing fast query responses.",
+    },
+  ],
+};
 
 function App() {
   return (
-    <Router basename="/Q-A"> {/* Add basename here */}
+    <Router basename="/">
+      <ScrollToTop />
       <Routes>
+        {/* --- PUBLIC ROUTES --- */}
         <Route path="/" element={<LandingPage />} />
+        {/* 3. Updated About Page using the missionData */}
+        <Route path="/about" element={<ContentPage {...missionData} />} />
+        {/* 4. Updated Features Page using the stackData */}
+        <Route path="/features" element={<ContentPage {...stackData} />} />
+        <Route path="/community" element={<LandingPage />} />{" "}
+        {/* Temporary redirect to landing */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
-        {/* Protected routes */}
+        {/* --- PRIVATE ROUTES --- */}
         <Route
           path="/dashboard"
           element={
@@ -88,14 +121,13 @@ function App() {
           }
         />
         <Route
-          path="/ask-question"
+          path="/docs"
           element={
-            <AskPrivateRoute>
-              <AskQuestion />
-            </AskPrivateRoute>
+            <PrivateRoute>
+              <ContentPage {...docsData} />
+            </PrivateRoute>
           }
         />
-        {/* Route for listing questions */}
         <Route
           path="/allQuestions"
           element={
@@ -104,7 +136,14 @@ function App() {
             </PrivateRoute>
           }
         />
-        {/* Route for Answering a Question */}
+        <Route
+          path="/askquestion"
+          element={
+            <AskPrivateRoute>
+              <AskQuestion />
+            </AskPrivateRoute>
+          }
+        />
         <Route
           path="/answerquestion"
           element={

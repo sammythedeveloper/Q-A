@@ -2,7 +2,6 @@ const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 
 async function authMiddleware(req, res, next) {
-
   // ✅ ALLOW CORS PREFLIGHT REQUESTS
   if (req.method === "OPTIONS") {
     return next();
@@ -19,12 +18,11 @@ async function authMiddleware(req, res, next) {
   const token = authHeader.split(" ")[1];
 
   try {
-    const { username, userid } = jwt.verify(
-      token,
-      process.env.JWT_SECRET 
-    );
+    // 1. Change 'userid' to 'user_id' to match your Login logic
+    const { username, user_id } = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = { username, userid };
+    // 2. Attach it to req.user exactly as you'll use it in controllers
+    req.user = { username, user_id };
     next();
   } catch (error) {
     return res

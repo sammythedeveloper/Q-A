@@ -1,6 +1,6 @@
 # 🚀 Stacky
 
-Stacky is a robust, full-stack web application built with **Next.js**, **Express**, and **MySQL**. It features a modern architecture designed for scalability, leveraging **Aiven Cloud** for database management and **Railway** for seamless backend deployment.
+Stacky is a robust, full-stack web application built with **Javascript**, **Express**, and **MySQL**. It features a modern architecture designed for scalability, leveraging **Aiven Cloud** for database management and **Railway** for seamless backend deployment.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)

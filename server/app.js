@@ -8,7 +8,7 @@ const port = process.env.PORT || 5500;
 
 const corsOptions = {
   origin: [
-    "https://stackyapp.vercel.app/", // my Vercel URL
+    "https://stackyapp.vercel.app", // my Vercel URL
     "http://localhost:3000", // testing
   ],
   credentials: true,

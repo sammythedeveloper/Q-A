@@ -1,6 +1,6 @@
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}", // Add paths to your template files
+    "./src/**/*.{js,jsx,ts,tsx}", // paths to my template files
   ],
   theme: {
     extend: {

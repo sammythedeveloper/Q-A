@@ -8,7 +8,7 @@ Stacky is a robust, full-stack web application built with **Javascript**, **Expr
 
 ## 🌟 Features
 
-- **Full-Stack Integration:** Seamless communication between a Next.js frontend and an Express.js backend.
+- **Full-Stack Integration:** Seamless communication between a Javascript frontend and an Express.js backend.
 - **Cloud Database:** Powered by Aiven MySQL with SSL encryption and optimized connection pooling.
 - **Secure Authentication:** JWT-based user sessions and secure password hashing.
 - **Modern UI/UX:** Responsive design built for a smooth user experience.

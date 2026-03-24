@@ -7,23 +7,14 @@ const app = express();
 const port = process.env.PORT || 5500;
 
 // 1. Middleware
-const allowedOrigins = ["http://localhost:3000", process.env.FRONTEND_URL];
+const corsOptions = {
+  origin: ["https://stackyapp.vercel.app", "http://localhost:3000"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (!allowedOrigins.includes(origin)) {
-        return callback(
-          new Error(`CORS policy: Access from origin ${origin} is not allowed`),
-          false
-        );
-      }
-      return callback(null, true);
-    },
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 app.use(express.json());
 
 /* ===============================

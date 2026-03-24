@@ -6,8 +6,17 @@ const dbConnection = require("./db/dbConfig");
 const app = express();
 const port = process.env.PORT || 5500;
 
-// 1. Updated CORS to be more flexible for deployment
-app.use(cors());
+const corsOptions = {
+  origin: [
+    "https://stackyapp.vercel.app", // my Vercel URL
+    "http://localhost:3000", // testing
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 

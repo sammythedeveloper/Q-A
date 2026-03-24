@@ -20,7 +20,7 @@ Stacky is a robust, full-stack web application built with **Javascript**, **Expr
 
 | Layer | Technology |
 | :--- | :--- |
-| **Frontend** | [Next.js](https://nextjs.org/), React, Tailwind CSS |
+| **Frontend** | React, Tailwind CSS & Framer libraries  |
 | **Backend** | [Node.js](https://nodejs.org/), [Express.js](https://expressjs.com/) |
 | **Database** | [MySQL](https://www.mysql.com/) via [Aiven](https://aiven.io/) |
 | **Deployment** | [Railway](https://railway.app/) (Backend), [Vercel](https://vercel.com/) (Frontend) |

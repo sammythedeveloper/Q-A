@@ -7,12 +7,12 @@ const app = express();
 const port = process.env.PORT || 5500;
 
 // 1. Middleware
-const corsOptions = {
-  origin: ["https://stackyapp.vercel.app", "http://localhost:3000"],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://stackyapp.vercel.app/"],
+    credentials: true,
+  })
+);
 
 app.use(cors(corsOptions));
 app.use(express.json());

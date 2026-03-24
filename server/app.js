@@ -4,26 +4,10 @@ const cors = require("cors");
 const dbConnection = require("./db/dbConfig");
 
 const app = express();
-const port = process.env.PORT || 5500; // NO fallback
-const notificationRoutes = require("./routes/notificationRoute");
+const port = process.env.PORT || 5500;
 
-/* ===============================
-   CORS CONFIG
-================================ */
-const allowedOrigins = [
-  "http://localhost:3000",
-];
-
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-      return callback(new Error("Not allowed by CORS"));
-    },
-    credentials: true,
-  })
-);
+// 1. Updated CORS to be more flexible for deployment
+app.use(cors());
 
 app.use(express.json());
 
@@ -49,7 +33,7 @@ app.get("/api/db-check", async (req, res) => {
    ROUTES
 ================================ */
 app.use("/api/users", require("./routes/userRoute"));
-app.use("/api/notifications", notificationRoutes);
+app.use("/api/notifications", require("./routes/notificationRoute"));
 app.use("/api/questions", require("./routes/questionRoute"));
 app.use("/api/answers", require("./routes/answerRoute"));
 
@@ -62,7 +46,7 @@ app.use((err, req, res, next) => {
 });
 
 /* ===============================
-   START SERVER (ONLY ONCE)
+   START SERVER (ONLY ONCE at the bottom)
 ================================ */
 app.listen(port, "0.0.0.0", () => {
   console.log(`🚀 Server running on 0.0.0.0:${port}`);
@@ -74,7 +58,7 @@ app.listen(port, "0.0.0.0", () => {
 (async () => {
   try {
     await dbConnection.execute("SELECT 1");
-    console.log("✅ Database connected");
+    console.log("✅ Database connected to Aiven");
   } catch (err) {
     console.error("❌ Database connection failed:", err.message);
   }

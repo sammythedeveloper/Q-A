@@ -39,7 +39,7 @@ Stacky is a robust, full-stack web application built with **Javascript**, **Expr
 Clone the repository and install dependencies for both client and server.
 
 ```bash
-git clone [https://github.com/yourusername/stacky.git](https://github.com/yourusername/stacky.git)
+git clone [https://github.com/sammythedeveloper/stacky.git](https://github.com/sammythedeveloper/stacky.git)
 cd stacky
 
 # Install backend dependencies
